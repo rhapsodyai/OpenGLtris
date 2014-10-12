@@ -45,7 +45,7 @@ Peice::Peice() {
 	this->setPeiceColorOnInit();
 	
 	//Set characteristics of peice
-	this->peice_x_position = 4;
+	this->peice_x_position = 0;
         this->peice_y_position = 0;
         this->peice_type = rand() % 7 + 1;
         this->peice_orientation = this->calculatePeiceOrientation(this->peice_type);
@@ -87,7 +87,7 @@ Peice::Peice(int type) {
 	this->setPeiceColorOnInit();
 	
 	//Set characteristics of peice
-	this->peice_x_position = 4;
+	this->peice_x_position = 0;
         this->peice_y_position = 0;
         this->peice_type = type;
         this->peice_orientation = this->calculatePeiceOrientation(this->peice_type);

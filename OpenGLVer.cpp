@@ -25,20 +25,15 @@
 using namespace std;
 
 //global variables
-//int currentPeiceX = 0;
-//int currentPeiceY = 0;
-//int currentPeiceID = 0;
-//int currentPeiceType = rand() % 7 + 1;
-//int currentPeiceOrientation = 1;
 int score = 0;
-
-char* scoreString = "Score: ";
+char* SCORE_STRING = "Score: ";
 
 //Block block1;
 
 Peice *currentPeice = new Peice();
+Peice *nextPeice = new Peice();
 Peice curPeice;
-Peice nextPeice;
+
 SoundEngine se;
 
 
@@ -202,15 +197,15 @@ void init() {
 void idle() {
     glutPostRedisplay();
     //cout << currentPeice->getPeiceHeight() << endl;
-    if(((currentPeice->getPeiceYPosition()-4) + currentPeice->getPeiceHeight()) < 24) {
+    if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
         currentPeice->incrementPeiceY();
     }
     else { //rollback
         if(currentPeice)
 		delete currentPeice;
-        currentPeice = new Peice();
-        //currentPeiceID = rand() % 7;
-	//currentPeice->setPeiceType(rand() % 7 + 1);
+	
+        currentPeice = nextPeice;
+	nextPeice = new Peice();
 
 
 	switch(currentPeice->getPeiceType()) {
@@ -331,9 +326,31 @@ void display() {
 
     /* Code to draw peices */
 
+    //nextPeice->drawLeftLPeice(325,150,1);
 
-    //Peice nextPeice = new Peice();
-    nextPeice.drawLeftLPeice(325,150,1);
+    switch(nextPeice->getPeiceType()) {
+	    case 1:
+		nextPeice->drawLeftLPeice(325,150,1);
+		break;
+	    case 2:
+		nextPeice->drawRightLPeice(325,150,1);
+		break;
+	    case 3:
+		nextPeice->drawTPeice(325,150,1);
+		break;
+	    case 4:
+		nextPeice->drawBoxPeice(325,150);
+		break;
+	    case 5:
+		nextPeice->drawLinePeice(325,150,1);
+		break;
+	    case 6:
+		nextPeice->drawRightTetroid(325,150,1);
+		break;
+	    case 7:
+		nextPeice->drawLeftTetroid(325,150,1);
+		break;
+    }
     
     switch(currentPeice->getPeiceType()) {
 	    case 1:
@@ -359,30 +376,21 @@ void display() {
 		break;
     }
 
-    //currentPeice.eraseLeftLPeice(0,24,1);
-    //currentPeice.eraseRightLPeice(0,2,1);
-    //currentPeice.eraseTPeice(0,24,1);
-    //currentPeice.eraseBoxPeice(0,24,1);
-    //currentPeice.eraseLinePeice(0,24,1);
-    //currentPeice.eraseRightTetroid(0,24,1);
-    //currentPeice.eraseLeftTetroid (0,24,1);
-    
+
+    //Displat the score bar
     glColor3ub(255.0,255.0,255.0);
     score+=10;
     char* score_string;
     sprintf(score_string, "%d", score);
-    drawString(300,20, scoreString);
+    drawString(300,20, SCORE_STRING);
     drawString(400,20, score_string);
 
-    //currentPeiceY++;
-
-    glFlush(); // added this line
-    glutSwapBuffers(); // removed this line
+    //Refresh the screen
+    glFlush();
+    glutSwapBuffers();
 }
 
-int getRandomOrientation(int p_type) {
 
-}
 
 // *** BEGIN SELF-WRITTEN *** //
 
