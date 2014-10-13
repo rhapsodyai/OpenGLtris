@@ -81,6 +81,7 @@ public:
 	int setPeiceOrientationOnInit(int p_type);
 	void buildPeice(int param_peice_type, int param_peice_orientation);
 	void drawPeice();
+	void drawPeiceAtCoordinates(int, int); 
 	void printPeiceData();
 
 	int calculatePeiceOrientation(int p_type);
@@ -88,20 +89,21 @@ public:
 	void rotatePeice(int p_type, int p_orientation);
 
 	//Peice Type Drawing Functions
-	void drawLeftLPeice(int,int,int);
-	void eraseLeftLPeice(int,int,int);
-	void drawRightLPeice(int,int,int);
-	void eraseRightLPeice(int,int,int);
-	void drawTPeice(int,int,int);
-	void eraseTPeice(int,int,int);
+	void drawLeftLPeice(int,int);
+	void drawRightLPeice(int,int);
+	void drawTPeice(int,int);
 	void drawBoxPeice(int,int);
+	void drawLinePeice(int,int);
+	void drawRightTetroid(int,int);
+	void drawLeftTetroid (int,int);
+
+	void eraseLeftLPeice(int,int);
+	void eraseRightLPeice(int,int);
+	void eraseTPeice(int,int);
 	void eraseBoxPeice(int,int);
-	void drawLinePeice(int,int,int);
-	void eraseLinePeice(int,int,int);
-	void drawRightTetroid(int,int,int);
-	void eraseRightTetroid(int,int,int);
-	void drawLeftTetroid (int,int,int);
-	void eraseLeftTetroid (int,int,int);
+	void eraseLinePeice(int,int);
+	void eraseRightTetroid(int,int);
+	void eraseLeftTetroid (int,int);
 
 	//Getters & Setters
 	int getPeiceXPosition();

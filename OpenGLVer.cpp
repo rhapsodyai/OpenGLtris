@@ -25,14 +25,21 @@
 using namespace std;
 
 //global variables
+int pauseBtn = 0;
 int score = 0;
 char* SCORE_STRING = "Score: ";
+//char* LINES_STRING = "Lines: ";
 
-//Block block1;
+
+Block blocka;
+Block blockb;
+Block blockc;
+Block blockd;
+
 
 Peice *currentPeice = new Peice();
 Peice *nextPeice = new Peice();
-Peice curPeice;
+
 
 SoundEngine se;
 
@@ -198,7 +205,8 @@ void idle() {
     glutPostRedisplay();
     //cout << currentPeice->getPeiceHeight() << endl;
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
-        currentPeice->incrementPeiceY();
+	if(pauseBtn == 0)
+        	currentPeice->incrementPeiceY();
     }
     else { //rollback
         if(currentPeice)
@@ -207,30 +215,6 @@ void idle() {
         currentPeice = nextPeice;
 	nextPeice = new Peice();
 
-
-	switch(currentPeice->getPeiceType()) {
-		case 1:
-			currentPeice->setPeiceOrientation(rand() % 4 + 1);
-			break;
-		case 2:
-			currentPeice->setPeiceOrientation(rand() % 4 + 1);
-			break;
-		case 3:
-			currentPeice->setPeiceOrientation(rand() % 4 + 1);
-			break;
-		case 4:
-			break;
-		case 5:
-			currentPeice->setPeiceOrientation(rand() % 2 + 1);
-			break;
-		case 6:
-			currentPeice->setPeiceOrientation(rand() % 2 + 1);
-			break;
-		case 7:
-			currentPeice->setPeiceOrientation(rand() % 2 + 1);
-			break;
-	}
- 
         //setColor();
 	//se.playSound("Classical.wav");        
     }
@@ -247,6 +231,13 @@ switch(key) {
 	//Rotate key
 	case 'z':
 
+		break;
+	case 'p':
+
+		if(pauseBtn == 1)
+			pauseBtn = 0;
+		else
+			pauseBtn = 1;
 		break;
 	}
 }
@@ -323,61 +314,36 @@ void display() {
     drawWindowPane();
     drawGrid();
     
-
-    /* Code to draw peices */
-
-    //nextPeice->drawLeftLPeice(325,150,1);
-
+    //Functionalize this
     switch(nextPeice->getPeiceType()) {
 	    case 1:
-		nextPeice->drawLeftLPeice(325,150,1);
+		nextPeice->drawLeftLPeice(325,150);
 		break;
 	    case 2:
-		nextPeice->drawRightLPeice(325,150,1);
+		nextPeice->drawRightLPeice(325,150);
 		break;
 	    case 3:
-		nextPeice->drawTPeice(325,150,1);
+		nextPeice->drawTPeice(325,150);
 		break;
 	    case 4:
 		nextPeice->drawBoxPeice(325,150);
 		break;
 	    case 5:
-		nextPeice->drawLinePeice(325,150,1);
+		nextPeice->drawLinePeice(325,150);
 		break;
 	    case 6:
-		nextPeice->drawRightTetroid(325,150,1);
+		nextPeice->drawRightTetroid(325,150);
 		break;
 	    case 7:
-		nextPeice->drawLeftTetroid(325,150,1);
-		break;
-    }
-    
-    switch(currentPeice->getPeiceType()) {
-	    case 1:
-		currentPeice->drawLeftLPeice(currentPeice->getPeiceXPosition()*BLOCK_SIZE,currentPeice->getPeiceYPosition()*BLOCK_SIZE,currentPeice->getPeiceOrientation());
-		break;
-	    case 2:
-		currentPeice->drawRightLPeice(currentPeice->getPeiceXPosition()*BLOCK_SIZE,currentPeice->getPeiceYPosition()*BLOCK_SIZE,currentPeice->getPeiceOrientation());
-		break;
-	    case 3:
-		currentPeice->drawTPeice(currentPeice->getPeiceXPosition()*BLOCK_SIZE,currentPeice->getPeiceYPosition()*BLOCK_SIZE,currentPeice->getPeiceOrientation());
-		break;
-	    case 4:
-		currentPeice->drawBoxPeice(currentPeice->getPeiceXPosition()*BLOCK_SIZE,currentPeice->getPeiceYPosition()*BLOCK_SIZE);
-		break;
-	    case 5:
-		currentPeice->drawLinePeice(currentPeice->getPeiceXPosition()*BLOCK_SIZE,currentPeice->getPeiceYPosition()*BLOCK_SIZE,currentPeice->getPeiceOrientation());
-		break;
-	    case 6:
-		currentPeice->drawRightTetroid(currentPeice->getPeiceXPosition()*BLOCK_SIZE,currentPeice->getPeiceYPosition()*BLOCK_SIZE,currentPeice->getPeiceOrientation());
-		break;
-	    case 7:
-		currentPeice->drawLeftTetroid(currentPeice->getPeiceXPosition()*BLOCK_SIZE,currentPeice->getPeiceYPosition()*BLOCK_SIZE,currentPeice->getPeiceOrientation());
+		nextPeice->drawLeftTetroid(325,150);
 		break;
     }
 
+    currentPeice->drawPeice();
 
-    //Displat the score bar
+
+
+    //Display the score bar
     glColor3ub(255.0,255.0,255.0);
     score+=10;
     char* score_string;

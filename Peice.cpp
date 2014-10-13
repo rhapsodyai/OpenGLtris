@@ -102,9 +102,65 @@ int setPeiceWidthOnInit(int p_type, int p_orientation) { return 0; }
 int setPeiceHeightOnInit(int p_type, int p_orientation) { return 0; }
 int setPeiceOrientationOnInit(int p_type) { return 0; }
 void buildPeice(int param_peice_type, int param_peice_orientation) {}
-void drawPeice() {}
-void printPeiceData() {}
 
+
+
+void Peice::drawPeice() {
+
+    switch(this->peice_type) {
+	    case 1:
+		this->drawLeftLPeice(this->peice_x_position*BLOCK_SIZE,this->peice_y_position*BLOCK_SIZE);
+		break;
+	    case 2:
+		this->drawRightLPeice(this->peice_x_position*BLOCK_SIZE,this->peice_y_position*BLOCK_SIZE);
+		break;
+	    case 3:
+		this->drawTPeice(this->peice_x_position*BLOCK_SIZE,this->peice_y_position*BLOCK_SIZE);
+		break;
+	    case 4:
+		this->drawBoxPeice(this->peice_x_position*BLOCK_SIZE,this->peice_y_position*BLOCK_SIZE);
+		break;
+	    case 5:
+		this->drawLinePeice(this->peice_x_position*BLOCK_SIZE,this->peice_y_position*BLOCK_SIZE);
+		break;
+	    case 6:
+		this->drawRightTetroid(this->peice_x_position*BLOCK_SIZE,this->peice_y_position*BLOCK_SIZE);
+		break;
+	    case 7:
+		this->drawLeftTetroid(this->peice_x_position*BLOCK_SIZE,this->peice_y_position*BLOCK_SIZE);
+		break;
+    }
+
+}
+
+
+void Peice::drawPeiceAtCoordinates(int x, int y) {
+
+    switch(this->peice_type) {
+	    case 1:
+		this->drawLeftLPeice(x*BLOCK_SIZE,y*BLOCK_SIZE);
+		break;
+	    case 2:
+		this->drawRightLPeice(x*BLOCK_SIZE,y*BLOCK_SIZE);
+		break;
+	    case 3:
+		this->drawTPeice(x*BLOCK_SIZE,y*BLOCK_SIZE);
+		break;
+	    case 4:
+		this->drawBoxPeice(x*BLOCK_SIZE,y*BLOCK_SIZE);
+		break;
+	    case 5:
+		this->drawLinePeice(x*BLOCK_SIZE,y*BLOCK_SIZE);
+		break;
+	    case 6:
+		this->drawRightTetroid(x*BLOCK_SIZE,y*BLOCK_SIZE);
+		break;
+	    case 7:
+		this->drawLeftTetroid(x,y*BLOCK_SIZE);
+		break;
+    }
+
+}
 
 void Peice::setPeiceColorOnInit() {
     srand(time(NULL));
@@ -148,10 +204,50 @@ void Peice::setPeiceColorOnInit() {
     }
 }
 
-
-void Peice::drawRightLPeice(int x, int y, int orientation) {
+void Peice::drawLeftLPeice(int x, int y)  {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
+		case 1:
+			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
+    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+BLOCK_SIZE, BLOCK_SIZE);
+    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+(BLOCK_SIZE*2), y+BLOCK_SIZE, BLOCK_SIZE);
+    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
+			break;
+		case 2:
+			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
+    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
+    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+(BLOCK_SIZE*2), BLOCK_SIZE);
+    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
+			break;
+		case 3:
+			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
+    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
+    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+(BLOCK_SIZE*2), y, BLOCK_SIZE);
+    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+(BLOCK_SIZE*2), y+BLOCK_SIZE, BLOCK_SIZE);
+			break;
+		case 4:
+			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+(BLOCK_SIZE*2), BLOCK_SIZE);
+    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
+    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+BLOCK_SIZE, BLOCK_SIZE);
+    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+(BLOCK_SIZE*2), BLOCK_SIZE);
+			break;
+	}
+}
+
+/* not completely implemented! */
+void Peice::eraseLeftLPeice(int x, int y) {
+	//ORIENTATION
+	switch(this->peice_orientation) {
+		case 1:
+			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x, y-BLOCK_SIZE, BLOCK_SIZE);
+    			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
+    			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+(BLOCK_SIZE*2), (y-BLOCK_SIZE), BLOCK_SIZE);
+			break;
+	}
+}
+void Peice::drawRightLPeice(int x, int y) {
+	//ORIENTATION
+	switch(this->peice_orientation) {
 		case 1:
 			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE,BLOCK_SIZE);
 			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+BLOCK_SIZE, BLOCK_SIZE);
@@ -180,9 +276,9 @@ void Peice::drawRightLPeice(int x, int y, int orientation) {
 }
 
 /* not completely implemented! */
-void Peice::eraseRightLPeice(int x, int y, int orientation)  {
+void Peice::eraseRightLPeice(int x, int y)  {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
     			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x, y, BLOCK_SIZE);
     			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
@@ -191,51 +287,9 @@ void Peice::eraseRightLPeice(int x, int y, int orientation)  {
 	}
 }
 
-void Peice::drawLeftLPeice(int x, int y, int orientation)  {
+void Peice::drawTPeice(int x, int y)  {
 	//ORIENTATION
-	switch(orientation) {
-		case 1:
-			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
-    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+BLOCK_SIZE, BLOCK_SIZE);
-    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+(BLOCK_SIZE*2), y+BLOCK_SIZE, BLOCK_SIZE);
-    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
-			break;
-		case 2:
-			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
-    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
-    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+BLOCK_SIZE, BLOCK_SIZE);
-    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+(BLOCK_SIZE*2), BLOCK_SIZE);
-			break;
-		case 3:
-			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
-    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
-    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
-    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+(BLOCK_SIZE*2), y, BLOCK_SIZE);
-			break;
-		case 4:
-			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
-    			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
-    			block3.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+(BLOCK_SIZE*2), BLOCK_SIZE);
-    			block4.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y+(BLOCK_SIZE*2), BLOCK_SIZE);
-			break;
-	}
-}
-
-/* not completely implemented! */
-void Peice::eraseLeftLPeice(int x, int y, int orientation) {
-	//ORIENTATION
-	switch(orientation) {
-		case 1:
-			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x, y-BLOCK_SIZE, BLOCK_SIZE);
-    			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
-    			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+(BLOCK_SIZE*2), (y-BLOCK_SIZE), BLOCK_SIZE);
-			break;
-	}
-}
-
-void Peice::drawTPeice(int x, int y, int orientation)  {
-	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y,BLOCK_SIZE);
 			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE,BLOCK_SIZE);
@@ -264,9 +318,9 @@ void Peice::drawTPeice(int x, int y, int orientation)  {
 }
 
 /* not completely implemented! */
-void Peice::eraseTPeice(int x, int y, int orientation) {
+void Peice::eraseTPeice(int x, int y) {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x, y, BLOCK_SIZE);
     			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+(BLOCK_SIZE*2), y, BLOCK_SIZE);
@@ -291,9 +345,9 @@ void Peice::eraseBoxPeice(int x, int y) {
 }
 
 // XXXX
-void Peice::drawLinePeice(int x, int y, int orientation) {
+void Peice::drawLinePeice(int x, int y) {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
     			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
@@ -310,9 +364,9 @@ void Peice::drawLinePeice(int x, int y, int orientation) {
 }
 
 /* not completely implemented! */
-void Peice::eraseLinePeice(int x, int y, int orientation) {
+void Peice::eraseLinePeice(int x, int y) {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x, y, BLOCK_SIZE);
     			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
@@ -326,9 +380,9 @@ void Peice::eraseLinePeice(int x, int y, int orientation) {
 
 //  XX
 // XX
-void Peice::drawRightTetroid(int x, int y, int orientation) {
+void Peice::drawRightTetroid(int x, int y) {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
     			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+(BLOCK_SIZE*2), BLOCK_SIZE);
@@ -346,9 +400,9 @@ void Peice::drawRightTetroid(int x, int y, int orientation) {
 }
 
 /* not completely implemented! */
-void Peice::eraseRightTetroid(int x, int y, int orientation) {
+void Peice::eraseRightTetroid(int x, int y) {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
     			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
@@ -360,9 +414,9 @@ void Peice::eraseRightTetroid(int x, int y, int orientation) {
 
 // XX
 //  XX
-void Peice::drawLeftTetroid (int x, int y, int orientation) {
+void Peice::drawLeftTetroid (int x, int y) {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			block1.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y, BLOCK_SIZE);
     			block2.drawBlockAtPosition(peiceColor.r, peiceColor.g, peiceColor.b, x, y+BLOCK_SIZE, BLOCK_SIZE);
@@ -380,9 +434,9 @@ void Peice::drawLeftTetroid (int x, int y, int orientation) {
 
 
 /* not completely implemented! */
-void Peice::eraseLeftTetroid (int x, int y, int orientation) {
+void Peice::eraseLeftTetroid (int x, int y) {
 	//ORIENTATION
-	switch(orientation) {
+	switch(this->peice_orientation) {
 		case 1:
 			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x, y, BLOCK_SIZE);
     			eblock.drawBlockAtPosition(paneColor.r, paneColor.g, paneColor.b, x+BLOCK_SIZE, y, BLOCK_SIZE);
@@ -424,22 +478,22 @@ int Peice::calculatePeiceHeight(int p_type, int p_orientation) {
 	if(p_type == 5 && p_orientation == 1)
 		return 1;
 	//2 (1,1),(1,3),(2,1),(2,3),(3,2),(3,4),(4),(6,2),(7,2)
-	if( (p_type == 1 && p_orientation == 1) || (p_type == 1 && p_orientation == 3) || (p_type == 2 && p_orientation == 1) || 
+	else if( (p_type == 1 && p_orientation == 1) || (p_type == 1 && p_orientation == 3) || (p_type == 2 && p_orientation == 1) || 
 	(p_type == 2 && p_orientation == 3) || (p_type == 3 && p_orientation == 2) || (p_type == 3 && p_orientation == 4) || 
 	(p_type == 4) || (p_type == 6 && p_orientation == 2) || (p_type == 7 && p_orientation == 2))
 		return 2;
 
 	//3 (1,2),(1,4),(2,2),(2,4),(3,1),(3,3),(6,1),(7,1)
-	if( (p_type == 1 && p_orientation == 2) || (p_type == 1 && p_orientation == 4) || (p_type == 2 && p_orientation == 2) || 
+	else if( (p_type == 1 && p_orientation == 2) || (p_type == 1 && p_orientation == 4) || (p_type == 2 && p_orientation == 2) || 
 	(p_type == 2 && p_orientation == 4) || (p_type == 3 && p_orientation == 1) || (p_type == 3 && p_orientation == 3) || 
 	(p_type == 6 && p_orientation == 1) || (p_type == 7 && p_orientation == 1))
 		return 3;
 
 	//4 (5,4)
-	if(p_type == 5 && p_orientation == 2)
+	else if(p_type == 5 && p_orientation == 2)
 		return 4;
-	
-	return -1;
+	else
+		return -1;
 }
 
 void Peice:: printPeiceData() {
