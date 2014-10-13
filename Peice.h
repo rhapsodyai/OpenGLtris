@@ -86,6 +86,7 @@ public:
 
 	int calculatePeiceOrientation(int p_type);
 	int calculatePeiceHeight(int p_type,int p_orientation);
+	int calculatePeiceWidth(int p_type, int p_orientation);
 	void rotatePeice(int p_type, int p_orientation);
 
 	//Peice Type Drawing Functions
@@ -111,6 +112,7 @@ public:
 	int getPeiceType();
 	int getPeiceOrientation();
 	int getPeiceHeight();
+	int getPeiceWidth();
 	void setPeiceXPosition(int newValue);
 	void setPeiceYPosition(int newValue);
 	void setPeiceType(int newValue);

@@ -39,13 +39,38 @@ Block blockd;
 
 Peice *currentPeice = new Peice();
 Peice *nextPeice = new Peice();
-
-
 SoundEngine se;
 
 
 //OpenGLtris board
 int opengltrisBoardVertical[24][10] = {
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,1,1,1,1,1},
+    {0,0,0,0,0,2,2,2,2,2},
+    {0,0,0,0,0,3,3,3,3,3},
+    {0,0,0,0,0,4,4,4,4,4},
+    {0,0,0,0,0,5,5,5,5,5},
+    {0,0,0,0,0,6,6,6,6,6},
+    {0,0,0,0,0,7,7,7,7,7},
+};
+
+int  copyBoard[24][10] = {
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
@@ -71,6 +96,7 @@ int opengltrisBoardVertical[24][10] = {
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
 };
+
 
 struct color {
     int r;
@@ -142,6 +168,12 @@ void drawDivider();
 void drawNextPeice();
 void drawWindowPane();
 void setColor();
+
+//engine functions
+void pushDown();
+void copyArray();
+void printArray();
+void eliminateNeighborsAcross(int,int);
 
 
 
@@ -216,7 +248,7 @@ void idle() {
 	nextPeice = new Peice();
 
         //setColor();
-	//se.playSound("Classical.wav");        
+	//se.playSound("Plop.wav");        
     }
     sleep(1000);
     //glutPostRedisplay();
@@ -251,7 +283,7 @@ void specialKeyboard(int key, int x, int y) {
             glutPostRedisplay();
             break;
         case GLUT_KEY_RIGHT:
-            if(currentPeice->getPeiceXPosition() < 8)
+            if(currentPeice->getPeiceXPosition() + currentPeice->getPeiceWidth() < 10)
                 currentPeice->incrementPeiceX();
             score++;
             glutPostRedisplay();
@@ -308,11 +340,11 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    drawDivider();
-    //drawBoard();   
+    drawDivider();   
     drawNextPeice();
     drawWindowPane();
     drawGrid();
+    drawBoard();
     
     //Functionalize this
     switch(nextPeice->getPeiceType()) {
@@ -421,16 +453,26 @@ void drawWindowPane() {
 
 
 void drawBoard() {
-    /*
-     for(int i = 0; i < WINDOW_WIDTH; i++) {
-     for(int j = 0; j < WINDOW_HEIGHT; j++) {
-     if(tetrisBoardVertical[j][i] == 1) {
-     drawSingleSquareColor(255,50,0,i*BLOCK_SIZE,j*BLOCK_SIZE,BLOCK_SIZE);
-     }
-     }
-     }
-     */
+	for (int i = 0; i < 10; i++) {
+		for(int j = 0; j < 24; j++) {
+			if(opengltrisBoardVertical[j][i] == 1)
+				blocka.drawBlockAtPosition(pastel_red_main.r, pastel_red_main.g, pastel_red_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+			if(opengltrisBoardVertical[j][i] == 2)
+				blocka.drawBlockAtPosition(pastel_yellow_main.r, pastel_yellow_main.g, pastel_yellow_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+			if(opengltrisBoardVertical[j][i] == 3)
+				blocka.drawBlockAtPosition(pastel_green_main.r, pastel_green_main.g, pastel_green_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+			if(opengltrisBoardVertical[j][i] == 4)
+				blocka.drawBlockAtPosition(pastel_cyan_main.r, pastel_cyan_main.g, pastel_cyan_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+			if(opengltrisBoardVertical[j][i] == 5)
+				blocka.drawBlockAtPosition(pastel_blue_main.r, pastel_blue_main.g, pastel_blue_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+			if(opengltrisBoardVertical[j][i] == 6)
+				blocka.drawBlockAtPosition(pastel_violet_main.r, pastel_violet_main.g, pastel_violet_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+			if(opengltrisBoardVertical[j][i] == 7)
+				blocka.drawBlockAtPosition(pastel_magenta_main.r, pastel_magenta_main.g, pastel_magenta_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+		}
+	}
 }
+
 
 /*
  * Draws a rectangle to the screen. lw_x is the lower left x coordinate, lw_y is the lower left y coordinate, ur_x is the upper right x coordinate, ur_y is the upper right y coordinate.
@@ -481,10 +523,6 @@ void drawSingleSquareWithoutBorder(float R, float G, float B, int x, int y, int 
     glEnd();
     
 }
-
-
-
-
 
 //Open GL Font engine
 void drawString(float x, float y, const char* string) {
@@ -553,8 +591,73 @@ void sleep(int cnt) {
     }
 }
 
+void copyArray() {
+	int x = 0 ,y = 0;
+	for(y = 0; y < 24; y++) {
+		for(x = 0; x < 10; x++) {
+			copyBoard[y][x] = opengltrisBoardVertical[y][x];
+		}
+	}
+    
+}
+
+void printArray() {
+	int x,y;
+	for(y = 0; y < 24; y++) {
+		for(x = 0; x < 10; x++) {
+			printf("%i",opengltrisBoardVertical[y][x]);
+		}
+        cout << endl;
+	}
+	cout << endl;
+}
 
 
+void eliminateNeighborsAcross(int xpos, int ypos) {
+	for(ypos = 0; ypos < 24; ypos++) {
+		for(xpos = 9; xpos >= 0; xpos--) {
+			//eliminate horizontal neighbors
+			if(opengltrisBoardVertical[ypos][xpos] == opengltrisBoardVertical[ypos][xpos-1] && opengltrisBoardVertical[ypos][xpos] != 0) {
+				while(opengltrisBoardVertical[ypos][xpos] == opengltrisBoardVertical[ypos][xpos-1] && xpos-1 >= 0) {
+					printf("X:%i Y:%i\n",xpos+1,ypos+1);
+					opengltrisBoardVertical[ypos][xpos] = 9;
+					if(xpos-1 >= 0) {
+						xpos--;
+					}
+					else {
+						break;
+					}
+				}
+				printf("X:%i Y:%i\n",ypos+1,xpos+1);;
+				opengltrisBoardVertical[ypos][xpos] = 9;
+			}
+		}
+	}
+}
+
+void pushDown() {
+	int x,y,i,entered = 0,count = 0;
+	for(x = 0; x < 10; x++) {
+		for(y = 23; y >=0; y--) {
+			if(opengltrisBoardVertical[y][x] == 9) {
+				entered = 1;
+				while(opengltrisBoardVertical[y-count][x] == 9) { //until there are no 9s
+					count++;
+					if(y-count < 0) //if 9s all the way to the top, exit
+						break;
+				}
+				for(i = 0; i < y; i++) {
+					if(y-count-i >= 0) {
+						opengltrisBoardVertical[y-i][x] = opengltrisBoardVertical[y-count-i][x];
+					}
+				}
+				for(i = count - 1; i >= 0; i--)
+					opengltrisBoardVertical[i][x] = 0;
+			}
+		}
+        count = 0;
+	}
+}
 
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
