@@ -14,6 +14,7 @@ public:
 	//Constructors
 	Block();
 	Block(int blkColor);
+	Block(int xcoordinate, int ycoordinate);
 
 	//Methods
 	void drawBlock(float, float, float, int);

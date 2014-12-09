@@ -36,6 +36,8 @@ Block blockb;
 Block blockc;
 Block blockd;
 
+//Draw a block at the 5,10 mass
+Block *testBlock = new Block(5*BLOCK_SIZE,10*BLOCK_SIZE);
 
 Peice *currentPeice = new Peice();
 Peice *nextPeice = new Peice();
@@ -235,22 +237,29 @@ void init() {
 
 void idle() {
     glutPostRedisplay();
-    //cout << currentPeice->getPeiceHeight() << endl;
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
 	if(pauseBtn == 0)
         	currentPeice->incrementPeiceY();
+	testBlock->drawBlock(255,0,0,24); //TESTING 1,2,3
     }
     else { //rollback
+	
+	cout << "Peice Type: " << currentPeice->getPeiceType() << endl;
+	cout << "Peice Orientation: " << currentPeice->getPeiceOrientation() << endl;
+	cout << "Peice Coordinates at Rollback: (" << currentPeice->getPeiceXPosition() << "," << currentPeice->getPeiceYPosition() << ")" << endl;
+	cout << endl;
+	
         if(currentPeice)
 		delete currentPeice;
 	
         currentPeice = nextPeice;
 	nextPeice = new Peice();
-
+	
+	
         //setColor();
 	//se.playSound("Plop.wav");        
     }
-    sleep(1000);
+    //sleep(1000);
     //glutPostRedisplay();
 }
 
@@ -270,6 +279,9 @@ switch(key) {
 			pauseBtn = 0;
 		else
 			pauseBtn = 1;
+		break;
+	case 'b':
+		delete testBlock;
 		break;
 	}
 }
@@ -473,6 +485,73 @@ void drawBoard() {
 	}
 }
 
+void updateBoard(int p_type, int p_orientation, int p_color, int p_x, int p_y) {
+	switch(p_type) {
+		case 1:
+			switch(p_orientation) {
+				case 1:
+					
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+			}
+			break;
+		case 2:
+			switch(p_orientation) {
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+			}
+			break;
+		case 3:
+			switch(p_orientation) {
+				case 1:
+					break;
+				case 2:
+					break;
+				case 3:
+					break;
+				case 4:
+					break;
+			}
+			break;
+		case 4:
+			break;
+		case 5:
+			switch(p_orientation) {
+				case 1:
+					break;
+				case 2:
+					break;
+			}
+			break;
+		case 6:
+			switch(p_orientation) {
+				case 1:
+					break;
+				case 2:
+					break;
+			}
+			break;
+		case 7:
+			switch(p_orientation) {
+				case 1:
+					break;
+				case 2:
+					break;
+			}
+			break;
+	}
+}
 
 /*
  * Draws a rectangle to the screen. lw_x is the lower left x coordinate, lw_y is the lower left y coordinate, ur_x is the upper right x coordinate, ur_y is the upper right y coordinate.

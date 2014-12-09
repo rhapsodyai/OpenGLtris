@@ -10,6 +10,12 @@ using namespace std;
 Block::Block() {}
 Block::Block(int blkColor) {}
 
+//Starting off a block at a given position
+Block::Block(int xcoordinate, int ycoordinate) {
+this->block_x_coordinate = xcoordinate;
+this->block_y_coordinate = ycoordinate;
+}
+
 //Methods
 void Block::drawBlock(float R, float G, float B, int size) {
     //draw the color center

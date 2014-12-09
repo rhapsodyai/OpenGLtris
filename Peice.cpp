@@ -52,7 +52,7 @@ Peice::Peice() {
         this->peice_height = calculatePeiceHeight(this->peice_type, this->peice_orientation);
 	this->peice_width = calculatePeiceWidth(this->peice_type, this->peice_orientation);
 
-	printPeiceData();
+	//printPeiceData();
 }
 
 Peice::Peice(int type) {
@@ -95,7 +95,7 @@ Peice::Peice(int type) {
         this->peice_height = calculatePeiceHeight(this->peice_type, this->peice_orientation);
 	this->peice_width = calculatePeiceWidth(this->peice_type, this->peice_orientation);
 
-	printPeiceData();
+	//printPeiceData();
 }
 
 
@@ -534,7 +534,10 @@ void Peice:: printPeiceData() {
 }
 
 
-void rotatePeice(int p_type, int p_orientation) {}
+void rotatePeice(int p_type, int p_orientation) {
+
+
+}
 
 //Getters
 int Peice::getPeiceXPosition()   { return this->peice_x_position; }
