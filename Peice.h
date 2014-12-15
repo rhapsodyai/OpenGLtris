@@ -122,6 +122,11 @@ public:
 	void incrementPeiceY();
 	void decrementPeiceY();
 
+	Block* returnBlock1();
+	Block* returnBlock2();
+	Block* returnBlock3();
+	Block* returnBlock4();
+
 private:
 
 };

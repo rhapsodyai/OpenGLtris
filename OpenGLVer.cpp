@@ -69,7 +69,7 @@ int opengltrisBoardVertical[24][10] = {
     {0,0,0,0,0,4,4,4,4,4},
     {0,0,0,0,0,5,5,5,5,5},
     {0,0,0,0,0,6,6,6,6,6},
-    {0,0,0,0,0,7,7,7,7,7},
+    {7,7,7,7,7,7,7,7,7,7},
 };
 
 int  copyBoard[24][10] = {
@@ -175,7 +175,7 @@ void setColor();
 void pushDown();
 void copyArray();
 void printArray();
-void eliminateNeighborsAcross(int,int);
+void eliminateNeighborsAcross();
 
 
 
@@ -259,7 +259,9 @@ void idle() {
         //setColor();
 	//se.playSound("Plop.wav");        
     }
-    //sleep(1000);
+    eliminateNeighborsAcross();
+    pushDown();
+    sleep(1000);
     //glutPostRedisplay();
 }
 
@@ -692,27 +694,29 @@ void printArray() {
 }
 
 
-void eliminateNeighborsAcross(int xpos, int ypos) {
-	for(ypos = 0; ypos < 24; ypos++) {
-		for(xpos = 9; xpos >= 0; xpos--) {
-			//eliminate horizontal neighbors
-			if(opengltrisBoardVertical[ypos][xpos] == opengltrisBoardVertical[ypos][xpos-1] && opengltrisBoardVertical[ypos][xpos] != 0) {
-				while(opengltrisBoardVertical[ypos][xpos] == opengltrisBoardVertical[ypos][xpos-1] && xpos-1 >= 0) {
-					printf("X:%i Y:%i\n",xpos+1,ypos+1);
-					opengltrisBoardVertical[ypos][xpos] = 9;
-					if(xpos-1 >= 0) {
-						xpos--;
-					}
-					else {
-						break;
-					}
-				}
-				printf("X:%i Y:%i\n",ypos+1,xpos+1);;
-				opengltrisBoardVertical[ypos][xpos] = 9;
+void eliminateNeighborsAcross() {
+	int xpos = 0, ypos = 0, copycount = 0, i = 0;
+	while(ypos < 24) {
+		
+		while(xpos < 9) { //while xpos is less than boardwidth minus 1 (10-1)
+			if(opengltrisBoardVertical[ypos][xpos] == opengltrisBoardVertical[ypos][xpos+1] && opengltrisBoardVertical[ypos][xpos] != 0) {
+				copycount++;
+				printf("Copycount at %i,%i : %i\n",xpos,ypos,copycount);
 			}
+			//if all the characters in a row are equal and not 0, fill in the 9s for that row
+			if(copycount == 9) {
+				for(i = 0; i < 10; i++) {
+					opengltrisBoardVertical[ypos][i] = 9;
+				}
+			}
+			xpos++;
 		}
+		copycount = 0;
+		xpos = 0;
+		ypos++;
 	}
 }
+
 
 void pushDown() {
 	int x,y,i,entered = 0,count = 0;
@@ -736,6 +740,19 @@ void pushDown() {
 		}
         count = 0;
 	}
+}
+
+/* The way that this should work is as follows 
+
+Step 1: At the end of each peice loop update board is called.
+Step 2: Update board returns the x and y coordinates for each peice in the array,from 1 to 4.
+Step 3: The board is updated with a number to represent the colored block it represents, from 1 to 7 at the coordinates given by each block.
+Step 4: All variables are reset, after which the main loop proceeds to delete the peice.
+
+*/
+void updateBoard() {
+	//Access the variables of the current peice and print them out for test
+	//currentPeice->
 }
 
 int main(int argc, char* argv[]) {

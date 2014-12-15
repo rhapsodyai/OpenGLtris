@@ -539,6 +539,12 @@ void rotatePeice(int p_type, int p_orientation) {
 
 }
 
+Block* returnBlock1() {
+     
+    //return *block1;
+}
+
+
 //Getters
 int Peice::getPeiceXPosition()   { return this->peice_x_position; }
 int Peice::getPeiceYPosition()   { return this->peice_y_position; }
