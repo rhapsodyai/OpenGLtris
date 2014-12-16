@@ -17,6 +17,9 @@
 #include "SoundEngine.h"
 #include "Block.h"
 #include "Peice.h"
+#include "BMP.h" //PP
+
+#include <cstdlib>
 
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 576
@@ -27,8 +30,9 @@ using namespace std;
 //global variables
 int pauseBtn = 0;
 int score = 0;
+int lines = 0;
 char* SCORE_STRING = "Score: ";
-//char* LINES_STRING = "Lines: ";
+char* LINES_STRING = "Lines: ";
 
 
 Block blocka;
@@ -36,12 +40,15 @@ Block blockb;
 Block blockc;
 Block blockd;
 
+BMP *bmp; //PP
+
 //Draw a block at the 5,10 mass
 Block *testBlock = new Block(5*BLOCK_SIZE,10*BLOCK_SIZE);
 
 Peice *currentPeice = new Peice();
 Peice *nextPeice = new Peice();
 SoundEngine se;
+
 
 
 //OpenGLtris board
@@ -64,7 +71,7 @@ int opengltrisBoardVertical[24][10] = {
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,1,1,1,1,1},
-    {0,0,0,0,0,2,2,2,2,2},
+    {2,2,2,2,2,2,2,2,2,2},
     {0,0,0,0,0,3,3,3,3,3},
     {0,0,0,0,0,4,4,4,4,4},
     {0,0,0,0,0,5,5,5,5,5},
@@ -177,16 +184,22 @@ void copyArray();
 void printArray();
 void eliminateNeighborsAcross();
 
+void strreverse(char*,char*);	
+void itoa(int,char*,int);
 
 
 
 
 //*** BEGIN GLUT FUNCTIONS ***//
 void init() {
+
+    bmp = new BMP("nyan.bmp");//PP
+
+
     //initialize colors
-    bgPaneColor.r = 255;
-    bgPaneColor.g = 255;
-    bgPaneColor.b = 255;
+    bgPaneColor.r = 0; //255;
+    bgPaneColor.g = 0; //255;
+    bgPaneColor.b = 0; //255;
     bgRightColor.r = 0;
     bgRightColor.g = 0;
     bgRightColor.b = 0;
@@ -240,14 +253,18 @@ void idle() {
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
 	if(pauseBtn == 0)
         	currentPeice->incrementPeiceY();
-	testBlock->drawBlock(255,0,0,24); //TESTING 1,2,3
+	//testBlock->drawBlock(255,0,0,24); //TESTING 1,2,3
+	cout << currentPeice->getBlock1X() << endl; //()->getBlockColor() << endl;
+	//cout << currentPeice->getBlock2()->getBlockXCoordinate() << endl;
+	//cout << currentPeice->getBlock3()->getBlockXCoordinate() << endl;
+	//cout << currentPeice->getBlock4()->getBlockXCoordinate() << endl;
     }
     else { //rollback
 	
-	cout << "Peice Type: " << currentPeice->getPeiceType() << endl;
-	cout << "Peice Orientation: " << currentPeice->getPeiceOrientation() << endl;
-	cout << "Peice Coordinates at Rollback: (" << currentPeice->getPeiceXPosition() << "," << currentPeice->getPeiceYPosition() << ")" << endl;
-	cout << endl;
+	//cout << "Peice Type: " << currentPeice->getPeiceType() << endl;
+	//cout << "Peice Orientation: " << currentPeice->getPeiceOrientation() << endl;
+	//cout << "Peice Coordinates at Rollback: (" << currentPeice->getPeiceXPosition() << "," << currentPeice->getPeiceYPosition() << ")" << endl;
+	//cout << endl;
 	
         if(currentPeice)
 		delete currentPeice;
@@ -273,7 +290,7 @@ switch(key) {
 		break;
 	//Rotate key
 	case 'z':
-
+		currentPeice->incrementPeiceOrientation();
 		break;
 	case 'p':
 
@@ -392,13 +409,38 @@ void display() {
     //Display the score bar
     glColor3ub(255.0,255.0,255.0);
     score+=10;
-    char* score_string;
-    sprintf(score_string, "%d", score);
-    drawString(300,20, SCORE_STRING);
-    drawString(400,20, score_string);
+
+   //WHY CANT I DO BOTH WITHOUT SEG FAULTING?
+    char * score_string;// = {0};
+    char * lines_string;
+    //sprintf(score_string, "%d %d", score, lines);
+    //sprintf(score_string, "%d", score);
+    sprintf(lines_string, "%d", lines);
+    //drawString(300,20, SCORE_STRING);
+    //drawString(400,20, score_string);
+    drawString(300,30, LINES_STRING);
+    drawString(400,30, lines_string);
+
+
+
+    //DISPLAY IMAGE PP
+    glEnable(GL_TEXTURE_2D);//テクスチャ有効
+    glBindTexture( GL_TEXTURE_2D, bmp->texture );
+    glEnable(GL_ALPHA_TEST);//アルファテスト開始
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, WINDOW_HEIGHT);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, WINDOW_HEIGHT/2); //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH, WINDOW_HEIGHT/2);   //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH, WINDOW_HEIGHT);     //右下
+    glEnd();
+    glDisable(GL_ALPHA_TEST);//アルファテスト終了
+    glDisable(GL_TEXTURE_2D);//テクスチャ無効
+
+
+ 
 
     //Refresh the screen
-    glFlush();
+    //glFlush();
     glutSwapBuffers();
 }
 
@@ -439,7 +481,6 @@ void drawDivider() {
 void drawNextPeice() {
 	glLineWidth(5.0);
 	glColor3ub(255,255,255);
-	
 	drawString(320,100, "NEXT PEICE");
 	glBegin(GL_LINE_STRIP);
 	glVertex2f(300, 120);
@@ -455,7 +496,6 @@ void drawNextPeice() {
 
 
 void drawWindowPane() {
-
 	glBegin(GL_QUADS);
 	glVertex2f(0.0f,0.0f);
 	glVertex2f(WINDOW_WIDTH/2,0.0f);
@@ -487,72 +527,21 @@ void drawBoard() {
 	}
 }
 
-void updateBoard(int p_type, int p_orientation, int p_color, int p_x, int p_y) {
-	switch(p_type) {
-		case 1:
-			switch(p_orientation) {
-				case 1:
-					
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
-					break;
-			}
-			break;
-		case 2:
-			switch(p_orientation) {
-				case 1:
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
-					break;
-			}
-			break;
-		case 3:
-			switch(p_orientation) {
-				case 1:
-					break;
-				case 2:
-					break;
-				case 3:
-					break;
-				case 4:
-					break;
-			}
-			break;
-		case 4:
-			break;
-		case 5:
-			switch(p_orientation) {
-				case 1:
-					break;
-				case 2:
-					break;
-			}
-			break;
-		case 6:
-			switch(p_orientation) {
-				case 1:
-					break;
-				case 2:
-					break;
-			}
-			break;
-		case 7:
-			switch(p_orientation) {
-				case 1:
-					break;
-				case 2:
-					break;
-			}
-			break;
-	}
+
+/* The way that this should work is as follows 
+
+Step 1: At the end of each peice loop update board is called.
+Step 2: Update board returns the x and y coordinates for each peice in the array,from 1 to 4.
+Step 3: The board is updated with a number to represent the colored block it represents, from 1 to 7 at the coordinates given by each block.
+Step 4: All variables are reset, after which the main loop proceeds to delete the peice.
+
+*/
+void updateBoard() {
+
+
+//opengltrisBoardVertical[currentPeice->getBlock1y][currentPeice->getBlock1y] = currentPeice->getColor;
+
+
 }
 
 /*
@@ -609,7 +598,7 @@ void drawSingleSquareWithoutBorder(float R, float G, float B, int x, int y, int 
 void drawString(float x, float y, const char* string) {
     char* p = (char*) string;
     glRasterPos3f(x, y, 0.0f);
-    
+
     while (*p != '\0') {
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, *p++);
     }
@@ -701,13 +690,13 @@ void eliminateNeighborsAcross() {
 		while(xpos < 9) { //while xpos is less than boardwidth minus 1 (10-1)
 			if(opengltrisBoardVertical[ypos][xpos] == opengltrisBoardVertical[ypos][xpos+1] && opengltrisBoardVertical[ypos][xpos] != 0) {
 				copycount++;
-				printf("Copycount at %i,%i : %i\n",xpos,ypos,copycount);
 			}
 			//if all the characters in a row are equal and not 0, fill in the 9s for that row
 			if(copycount == 9) {
 				for(i = 0; i < 10; i++) {
 					opengltrisBoardVertical[ypos][i] = 9;
 				}
+				lines++;
 			}
 			xpos++;
 		}
@@ -738,22 +727,45 @@ void pushDown() {
 					opengltrisBoardVertical[i][x] = 0;
 			}
 		}
-        count = 0;
+        	count = 0;
 	}
 }
 
-/* The way that this should work is as follows 
 
-Step 1: At the end of each peice loop update board is called.
-Step 2: Update board returns the x and y coordinates for each peice in the array,from 1 to 4.
-Step 3: The board is updated with a number to represent the colored block it represents, from 1 to 7 at the coordinates given by each block.
-Step 4: All variables are reset, after which the main loop proceeds to delete the peice.
 
-*/
-void updateBoard() {
-	//Access the variables of the current peice and print them out for test
-	//currentPeice->
+void strreverse(char* begin, char* end) {
+	
+	char aux;
+	
+	while(end>begin)
+	
+		aux=*end, *end--=*begin, *begin++=aux;
+	
 }
+	
+void itoa(int value, char* str, int base) {
+	
+	static char num[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+	char* wstr=str;
+	int sign;
+
+	// Validate base
+	
+	if (base<2 || base>35){ *wstr='\0'; return; }
+
+	// Take care of sign
+	if ((sign=value) < 0) value = -value;
+		
+	// Conversion. Number is reversed.
+	do *wstr++ = num[value%base]; while(value/=base);
+	if(sign<0) *wstr++='-';
+	*wstr='\0';
+	
+	// Reverse string
+	strreverse(str,wstr-1);
+	
+}
+
 
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);

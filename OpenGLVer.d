@@ -88,4 +88,5 @@ OpenGLVer.d: OpenGLVer.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/4.8/bits/locale_facets.tcc \
  /usr/include/c++/4.8/bits/basic_ios.tcc \
  /usr/include/c++/4.8/bits/ostream.tcc /usr/include/c++/4.8/istream \
- /usr/include/c++/4.8/bits/istream.tcc SoundEngine.h Block.h Peice.h
+ /usr/include/c++/4.8/bits/istream.tcc SoundEngine.h Block.h Peice.h \
+ BMP.h /usr/include/c++/4.8/cstdlib

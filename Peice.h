@@ -52,7 +52,7 @@ public:
 	Block block2;
 	Block block3;
 	Block block4;
-	Block eblock;
+	//Block eblock;
 
 	bool movable;
         int peice_x_position;
@@ -98,13 +98,6 @@ public:
 	void drawRightTetroid(int,int);
 	void drawLeftTetroid (int,int);
 
-	void eraseLeftLPeice(int,int);
-	void eraseRightLPeice(int,int);
-	void eraseTPeice(int,int);
-	void eraseBoxPeice(int,int);
-	void eraseLinePeice(int,int);
-	void eraseRightTetroid(int,int);
-	void eraseLeftTetroid (int,int);
 
 	//Getters & Setters
 	int getPeiceXPosition();
@@ -121,11 +114,15 @@ public:
 	void decrementPeiceX();
 	void incrementPeiceY();
 	void decrementPeiceY();
+	void incrementPeiceOrientation();
 
-	Block* returnBlock1();
-	Block* returnBlock2();
-	Block* returnBlock3();
-	Block* returnBlock4();
+	Block* getBlock1();
+	Block* getBlock2();
+	Block* getBlock3();
+	Block* getBlock4();
+
+	int getBlock1X();
+	int getBlock1Y();
 
 private:
 
