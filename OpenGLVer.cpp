@@ -17,7 +17,7 @@
 #include "SoundEngine.h"
 #include "Block.h"
 #include "Peice.h"
-#include "BMP.h" //PP
+//#include "BMP.h" //PP
 
 #include <cstdlib>
 
@@ -40,7 +40,7 @@ Block blockb;
 Block blockc;
 Block blockd;
 
-BMP *bmp; //PP
+//BMP *bmp; //PP
 
 //Draw a block at the 5,10 mass
 Block *testBlock = new Block(5*BLOCK_SIZE,10*BLOCK_SIZE);
@@ -193,7 +193,7 @@ void itoa(int,char*,int);
 //*** BEGIN GLUT FUNCTIONS ***//
 void init() {
 
-    bmp = new BMP("nyan.bmp");//PP
+    //bmp = new BMP("nyan.bmp");//PP
 
 
     //initialize colors
@@ -424,6 +424,7 @@ void display() {
 
 
     //DISPLAY IMAGE PP
+    /*	
     glEnable(GL_TEXTURE_2D);//テクスチャ有効
     glBindTexture( GL_TEXTURE_2D, bmp->texture );
     glEnable(GL_ALPHA_TEST);//アルファテスト開始
@@ -435,7 +436,7 @@ void display() {
     glEnd();
     glDisable(GL_ALPHA_TEST);//アルファテスト終了
     glDisable(GL_TEXTURE_2D);//テクスチャ無効
-
+*/
 
  
 
