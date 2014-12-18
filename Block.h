@@ -20,6 +20,8 @@ public:
 	void drawBlock(float, float, float, int);
 	void drawBlockAtPosition(float, float, float, int, int, int);
 
+	void printBlockData();
+
 	//Getters & Setters
 	int getBlockXCoordinate();
 	int getBlockYCoordinate();

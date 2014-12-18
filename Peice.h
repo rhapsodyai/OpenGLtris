@@ -73,6 +73,7 @@ public:
 	//Constructors
 	Peice();
 	Peice(int);
+	~Peice();
 
 	//Methods	
 	void setPeiceColorOnInit();
@@ -120,9 +121,16 @@ public:
 	Block* getBlock2();
 	Block* getBlock3();
 	Block* getBlock4();
-
+	
+	//temp getters and setters for blocks
 	int getBlock1X();
 	int getBlock1Y();
+	int getBlock2X();
+	int getBlock2Y();
+	int getBlock3X();
+	int getBlock3Y();
+	int getBlock4X();
+	int getBlock4Y();
 
 private:
 

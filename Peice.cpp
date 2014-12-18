@@ -13,6 +13,17 @@ using namespace std;
 
 //constructor
 Peice::Peice() {
+
+	block1.setBlockXCoordinate(0);
+	block2.setBlockXCoordinate(0);
+	block3.setBlockXCoordinate(0);
+	block4.setBlockXCoordinate(0);
+
+	block1.setBlockYCoordinate(0);
+	block2.setBlockYCoordinate(0);
+	block3.setBlockYCoordinate(0);
+	block4.setBlockYCoordinate(0);
+
 	//Set Color Library Default Values
 	this->pastel_red.r     = 246;
 	this->pastel_red.g     = 150;
@@ -56,6 +67,17 @@ Peice::Peice() {
 }
 
 Peice::Peice(int type) {
+
+	block1.setBlockXCoordinate(0);
+	block2.setBlockXCoordinate(0);
+	block3.setBlockXCoordinate(0);
+	block4.setBlockXCoordinate(0);
+
+	block1.setBlockYCoordinate(0);
+	block2.setBlockYCoordinate(0);
+	block3.setBlockYCoordinate(0);
+	block4.setBlockYCoordinate(0);
+	
 	//Set Color Library Default Values
 	this->pastel_red.r     = 246;
 	this->pastel_red.g     = 150;
@@ -96,6 +118,21 @@ Peice::Peice(int type) {
 	this->peice_width = calculatePeiceWidth(this->peice_type, this->peice_orientation);
 
 	//printPeiceData();
+}
+
+Peice::~Peice() {
+/*
+	block1.setBlockXCoordinate(4);
+	block2.setBlockXCoordinate(4);
+	block3.setBlockXCoordinate(4);
+	block4.setBlockXCoordinate(4);
+
+	//WHY DOES THIS NOT HAPPEN AUTOMATICALLY?
+	block1.setBlockYCoordinate(0);
+	block2.setBlockYCoordinate(0);
+	block3.setBlockYCoordinate(0);
+	block4.setBlockYCoordinate(0);
+*/
 }
 
 
@@ -167,6 +204,12 @@ void Peice::drawPeiceAtCoordinates(int x, int y) {
 void Peice::setPeiceColorOnInit() {
     srand(time(NULL));
     int randomColor = rand() % 7;
+    
+    block1.setBlockColor(randomColor+1);
+    block2.setBlockColor(randomColor+1);
+    block3.setBlockColor(randomColor+1);
+    block4.setBlockColor(randomColor+1);
+    
     switch(randomColor) {
         case 0:
             peiceColor.r = pastel_red.r;
@@ -444,7 +487,7 @@ int Peice::calculatePeiceWidth(int p_type, int p_orientation) {
 		return -1;
 }
 
-void Peice:: printPeiceData() {
+void Peice::printPeiceData() {
 	cout << "This Peice X position is: " << peice_x_position << endl;
 	cout << "This Peice Y position is: " << peice_y_position << endl;
 	cout << "This Peice Type is: "        << peice_type << endl;
@@ -488,19 +531,53 @@ Block* Peice::getBlock3() { return &block3; }
 Block* Peice::getBlock4() { return &block4; }
 
 
-//temp getters for blocks
+//temp getters for blocks NOT NEEDED
 int Peice::getBlock1X() { return block1.getBlockXCoordinate(); }
 int Peice::getBlock1Y() { return block1.getBlockYCoordinate(); }
-
+int Peice::getBlock2X() { return block2.getBlockXCoordinate(); }
+int Peice::getBlock2Y() { return block2.getBlockYCoordinate(); }
+int Peice::getBlock3X() { return block3.getBlockXCoordinate(); }
+int Peice::getBlock3Y() { return block3.getBlockYCoordinate(); }
+int Peice::getBlock4X() { return block4.getBlockXCoordinate(); }
+int Peice::getBlock4Y() { return block4.getBlockYCoordinate(); }
 
 //Setters
 void Peice::setPeiceType(int newValue)        { this->peice_type = newValue; }
 void Peice::setPeiceXPosition(int newValue)   { this->peice_x_position = newValue; }
 void Peice::setPeiceYPosition(int newValue)   { this->peice_x_position = newValue; }
 void Peice::setPeiceOrientation(int newValue) { this->peice_orientation = newValue; }
-void Peice::incrementPeiceX() { this->peice_x_position += 1; }
-void Peice::decrementPeiceX() { this->peice_x_position -= 1; }
-void Peice::incrementPeiceY() { this->peice_y_position += 1; }
-void Peice::decrementPeiceY() { this->peice_y_position -= 1; }
 
+void Peice::incrementPeiceX() { this->peice_x_position += 1;
+				
+				//setting the block values when updating the peice value 
+				this->block1.setBlockXCoordinate(block1.getBlockXCoordinate()+1);
+				this->block2.setBlockXCoordinate(block2.getBlockXCoordinate()+1);
+				this->block3.setBlockXCoordinate(block3.getBlockXCoordinate()+1);
+				this->block4.setBlockXCoordinate(block4.getBlockXCoordinate()+1);
+}
+void Peice::decrementPeiceX() { this->peice_x_position -= 1; 
 
+				//setting the block values when updating the peice value 
+				this->block1.setBlockXCoordinate(block1.getBlockXCoordinate()-1);
+				this->block2.setBlockXCoordinate(block2.getBlockXCoordinate()-1);
+				this->block3.setBlockXCoordinate(block3.getBlockXCoordinate()-1);
+				this->block4.setBlockXCoordinate(block4.getBlockXCoordinate()-1);
+
+}
+void Peice::incrementPeiceY() { this->peice_y_position += 1; 
+
+				//setting the block values when updating the peice value 
+				this->block1.setBlockYCoordinate(block1.getBlockYCoordinate()+1);
+				this->block2.setBlockYCoordinate(block2.getBlockYCoordinate()+1);
+				this->block3.setBlockYCoordinate(block3.getBlockYCoordinate()+1);
+				this->block4.setBlockYCoordinate(block4.getBlockYCoordinate()+1);
+
+}
+void Peice::decrementPeiceY() { this->peice_y_position -= 1; 
+
+				//setting the block values when updating the peice value 
+				this->block1.setBlockYCoordinate(block1.getBlockYCoordinate()-1);
+				this->block2.setBlockYCoordinate(block2.getBlockYCoordinate()-1);
+				this->block3.setBlockYCoordinate(block3.getBlockYCoordinate()-1);
+				this->block4.setBlockYCoordinate(block4.getBlockYCoordinate()-1);
+}

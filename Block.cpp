@@ -1,4 +1,6 @@
 #include <GL/glut.h>
+#include <stdio.h>
+#include <iostream>
 #include "Block.h"
 
 
@@ -8,12 +10,15 @@ using namespace std;
 
 //Constructors
 Block::Block() {}
-Block::Block(int blkColor) {}
+Block::Block(int blkColor) {
+	//this->block_x_coordinate = 4;
+	this->block_y_coordinate = 0;
+}
 
 //Starting off a block at a given position
 Block::Block(int xcoordinate, int ycoordinate) {
-this->block_x_coordinate = xcoordinate;
-this->block_y_coordinate = ycoordinate;
+	this->block_x_coordinate = xcoordinate;
+	this->block_y_coordinate = ycoordinate;
 }
 
 //Methods
@@ -59,6 +64,13 @@ void Block::drawBlockAtPosition(float R, float G, float B, int x, int y, int siz
     glVertex2f(x,y+size);
     glEnd();
     //glFlush();
+}
+
+void Block::printBlockData() {
+	cout << "This Block X position is: " << block_x_coordinate << endl;
+	cout << "This Block Y position is: " << block_y_coordinate << endl;
+	cout << "This Block Color is: "    << block_color << endl;
+	cout << endl;
 }
 
 //Getters & Setters

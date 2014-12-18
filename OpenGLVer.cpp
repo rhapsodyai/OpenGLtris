@@ -17,7 +17,7 @@
 #include "SoundEngine.h"
 #include "Block.h"
 #include "Peice.h"
-//#include "BMP.h" //PP
+#include "BMP.h" //PP
 
 #include <cstdlib>
 
@@ -35,12 +35,10 @@ char* SCORE_STRING = "Score: ";
 char* LINES_STRING = "Lines: ";
 
 
-Block blocka;
-Block blockb;
-Block blockc;
-Block blockd;
+Block drawingblock;
 
-//BMP *bmp; //PP
+
+BMP *bmp; //PP
 
 //Draw a block at the 5,10 mass
 Block *testBlock = new Block(5*BLOCK_SIZE,10*BLOCK_SIZE);
@@ -70,12 +68,12 @@ int opengltrisBoardVertical[24][10] = {
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,1,1,1,1,1},
+    {0,0,0,0,0,0,0,0,0,0},
     {2,2,2,2,2,2,2,2,2,2},
-    {0,0,0,0,0,3,3,3,3,3},
-    {0,0,0,0,0,4,4,4,4,4},
-    {0,0,0,0,0,5,5,5,5,5},
-    {0,0,0,0,0,6,6,6,6,6},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
     {7,7,7,7,7,7,7,7,7,7},
 };
 
@@ -179,6 +177,7 @@ void drawWindowPane();
 void setColor();
 
 //engine functions
+void updateBoard();
 void pushDown();
 void copyArray();
 void printArray();
@@ -193,7 +192,7 @@ void itoa(int,char*,int);
 //*** BEGIN GLUT FUNCTIONS ***//
 void init() {
 
-    //bmp = new BMP("nyan.bmp");//PP
+    bmp = new BMP("nyan.bmp");//PP
 
 
     //initialize colors
@@ -253,11 +252,15 @@ void idle() {
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
 	if(pauseBtn == 0)
         	currentPeice->incrementPeiceY();
+
 	//testBlock->drawBlock(255,0,0,24); //TESTING 1,2,3
-	cout << currentPeice->getBlock1X() << endl; //()->getBlockColor() << endl;
-	//cout << currentPeice->getBlock2()->getBlockXCoordinate() << endl;
-	//cout << currentPeice->getBlock3()->getBlockXCoordinate() << endl;
-	//cout << currentPeice->getBlock4()->getBlockXCoordinate() << endl;
+
+	//cout << currentPeice->getBlock1X() << endl; 
+	//cout << currentPeice->getBlock1()->getBlockColor() << endl;
+
+	///currentPeice->getBlock1()->printBlockData();
+
+
     }
     else { //rollback
 	
@@ -265,7 +268,8 @@ void idle() {
 	//cout << "Peice Orientation: " << currentPeice->getPeiceOrientation() << endl;
 	//cout << "Peice Coordinates at Rollback: (" << currentPeice->getPeiceXPosition() << "," << currentPeice->getPeiceYPosition() << ")" << endl;
 	//cout << endl;
-	
+	updateBoard();
+	printArray();
         if(currentPeice)
 		delete currentPeice;
 	
@@ -278,6 +282,7 @@ void idle() {
     }
     eliminateNeighborsAcross();
     pushDown();
+    
     sleep(1000);
     //glutPostRedisplay();
 }
@@ -424,7 +429,6 @@ void display() {
 
 
     //DISPLAY IMAGE PP
-    /*	
     glEnable(GL_TEXTURE_2D);//テクスチャ有効
     glBindTexture( GL_TEXTURE_2D, bmp->texture );
     glEnable(GL_ALPHA_TEST);//アルファテスト開始
@@ -436,7 +440,7 @@ void display() {
     glEnd();
     glDisable(GL_ALPHA_TEST);//アルファテスト終了
     glDisable(GL_TEXTURE_2D);//テクスチャ無効
-*/
+
 
  
 
@@ -511,19 +515,19 @@ void drawBoard() {
 	for (int i = 0; i < 10; i++) {
 		for(int j = 0; j < 24; j++) {
 			if(opengltrisBoardVertical[j][i] == 1)
-				blocka.drawBlockAtPosition(pastel_red_main.r, pastel_red_main.g, pastel_red_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+				drawingblock.drawBlockAtPosition(pastel_red_main.r, pastel_red_main.g, pastel_red_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
 			if(opengltrisBoardVertical[j][i] == 2)
-				blocka.drawBlockAtPosition(pastel_yellow_main.r, pastel_yellow_main.g, pastel_yellow_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+				drawingblock.drawBlockAtPosition(pastel_yellow_main.r, pastel_yellow_main.g, pastel_yellow_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
 			if(opengltrisBoardVertical[j][i] == 3)
-				blocka.drawBlockAtPosition(pastel_green_main.r, pastel_green_main.g, pastel_green_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+				drawingblock.drawBlockAtPosition(pastel_green_main.r, pastel_green_main.g, pastel_green_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
 			if(opengltrisBoardVertical[j][i] == 4)
-				blocka.drawBlockAtPosition(pastel_cyan_main.r, pastel_cyan_main.g, pastel_cyan_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+				drawingblock.drawBlockAtPosition(pastel_cyan_main.r, pastel_cyan_main.g, pastel_cyan_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
 			if(opengltrisBoardVertical[j][i] == 5)
-				blocka.drawBlockAtPosition(pastel_blue_main.r, pastel_blue_main.g, pastel_blue_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+				drawingblock.drawBlockAtPosition(pastel_blue_main.r, pastel_blue_main.g, pastel_blue_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
 			if(opengltrisBoardVertical[j][i] == 6)
-				blocka.drawBlockAtPosition(pastel_violet_main.r, pastel_violet_main.g, pastel_violet_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+				drawingblock.drawBlockAtPosition(pastel_violet_main.r, pastel_violet_main.g, pastel_violet_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
 			if(opengltrisBoardVertical[j][i] == 7)
-				blocka.drawBlockAtPosition(pastel_magenta_main.r, pastel_magenta_main.g, pastel_magenta_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
+				drawingblock.drawBlockAtPosition(pastel_magenta_main.r, pastel_magenta_main.g, pastel_magenta_main.b, i*BLOCK_SIZE, j*BLOCK_SIZE, BLOCK_SIZE);
 		}
 	}
 }
@@ -539,8 +543,10 @@ Step 4: All variables are reset, after which the main loop proceeds to delete th
 */
 void updateBoard() {
 
-
-//opengltrisBoardVertical[currentPeice->getBlock1y][currentPeice->getBlock1y] = currentPeice->getColor;
+opengltrisBoardVertical[currentPeice->getBlock1()->getBlockYCoordinate()][currentPeice->getBlock1()->getBlockXCoordinate()] = currentPeice->getBlock1()->getBlockColor();
+opengltrisBoardVertical[currentPeice->getBlock2()->getBlockYCoordinate()][currentPeice->getBlock2()->getBlockXCoordinate()] = currentPeice->getBlock2()->getBlockColor();
+opengltrisBoardVertical[currentPeice->getBlock3()->getBlockYCoordinate()][currentPeice->getBlock3()->getBlockXCoordinate()] = currentPeice->getBlock3()->getBlockColor();
+opengltrisBoardVertical[currentPeice->getBlock4()->getBlockYCoordinate()][currentPeice->getBlock4()->getBlockXCoordinate()] = currentPeice->getBlock4()->getBlockColor();
 
 
 }
