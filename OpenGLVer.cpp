@@ -39,6 +39,7 @@ Block drawingblock;
 
 
 BMP *bmp; //PP
+BMP *bmp2;
 
 //Draw a block at the 5,10 mass
 Block *testBlock = new Block(5*BLOCK_SIZE,10*BLOCK_SIZE);
@@ -76,6 +77,7 @@ int opengltrisBoardVertical[24][10] = {
     {0,0,0,0,0,0,0,0,0,0},
     {7,7,7,7,7,7,7,7,7,7},
 };
+
 
 int  copyBoard[24][10] = {
     {0,0,0,0,0,0,0,0,0,0},
@@ -193,7 +195,7 @@ void itoa(int,char*,int);
 void init() {
 
     bmp = new BMP("nyan.bmp");//PP
-
+    bmp2 = new BMP("bou.bmp");//PP
 
     //initialize colors
     bgPaneColor.r = 0; //255;
@@ -252,37 +254,27 @@ void idle() {
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
 	if(pauseBtn == 0)
         	currentPeice->incrementPeiceY();
-
-	//testBlock->drawBlock(255,0,0,24); //TESTING 1,2,3
-
-	//cout << currentPeice->getBlock1X() << endl; 
-	//cout << currentPeice->getBlock1()->getBlockColor() << endl;
-
-	///currentPeice->getBlock1()->printBlockData();
-
-
     }
     else { //rollback
-	
-	//cout << "Peice Type: " << currentPeice->getPeiceType() << endl;
-	//cout << "Peice Orientation: " << currentPeice->getPeiceOrientation() << endl;
-	//cout << "Peice Coordinates at Rollback: (" << currentPeice->getPeiceXPosition() << "," << currentPeice->getPeiceYPosition() << ")" << endl;
-	//cout << endl;
+	currentPeice->getBlock1()->printBlockData();
+	currentPeice->getBlock2()->printBlockData();
+	currentPeice->getBlock3()->printBlockData();
+	currentPeice->getBlock4()->printBlockData();
+
 	updateBoard();
-	printArray();
-        if(currentPeice)
+	//printArray();
+        
+	if(currentPeice)
 		delete currentPeice;
 	
         currentPeice = nextPeice;
-	nextPeice = new Peice();
-	
+	nextPeice = new Peice();	
 	
         //setColor();
 	//se.playSound("Plop.wav");        
     }
     eliminateNeighborsAcross();
     pushDown();
-    
     sleep(1000);
     //glutPostRedisplay();
 }
@@ -433,10 +425,47 @@ void display() {
     glBindTexture( GL_TEXTURE_2D, bmp->texture );
     glEnable(GL_ALPHA_TEST);//アルファテスト開始
     glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, WINDOW_HEIGHT);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, WINDOW_HEIGHT/2); //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH, WINDOW_HEIGHT/2);   //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH, WINDOW_HEIGHT);     //右下
+    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3+16, WINDOW_HEIGHT);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3+16, WINDOW_HEIGHT/2); //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH+16, WINDOW_HEIGHT/2);     //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH+16, WINDOW_HEIGHT);       //右下
+    glEnd();
+    glDisable(GL_ALPHA_TEST);//アルファテスト終了
+    glDisable(GL_TEXTURE_2D);//テクスチャ無効
+
+
+    glEnable(GL_TEXTURE_2D);//テクスチャ有効
+    glBindTexture( GL_TEXTURE_2D, bmp2->texture );
+    glEnable(GL_ALPHA_TEST);//アルファテスト開始
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 128);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 0);     //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 0);    //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 128);  //右下
+    glEnd();
+glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 256);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 128);   //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 128);  //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 256);  //右下
+    glEnd();
+glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 384);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 256);   //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 256);  //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 384);  //右下
+    glEnd();
+glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 512);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 384);   //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 384);  //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 512);  //右下
+    glEnd();
+glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 640);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 512);   //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 512);  //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 640);  //右下
     glEnd();
     glDisable(GL_ALPHA_TEST);//アルファテスト終了
     glDisable(GL_TEXTURE_2D);//テクスチャ無効
@@ -542,7 +571,13 @@ Step 4: All variables are reset, after which the main loop proceeds to delete th
 
 */
 void updateBoard() {
-
+/*
+cout << "Block info: THIS IS FOR DEBUGING!" << endl;
+cout << "Block 1 Coordinates and Color: (" << currentPeice->getBlock1()->getBlockXCoordinate() << "," << currentPeice->getBlock1()->getBlockYCoordinate() << "):" << currentPeice->getBlock1()->getBlockColor() << endl;
+cout << "Block 1 Coordinates and Color: (" << currentPeice->getBlock2()->getBlockXCoordinate() << "," << currentPeice->getBlock2()->getBlockYCoordinate() << "):" << currentPeice->getBlock2()->getBlockColor() << endl; 
+cout << "Block 1 Coordinates and Color: (" << currentPeice->getBlock3()->getBlockXCoordinate() << "," << currentPeice->getBlock3()->getBlockYCoordinate() << "):" << currentPeice->getBlock3()->getBlockColor() << endl; 
+cout << "Block 1 Coordinates and Color: (" << currentPeice->getBlock4()->getBlockXCoordinate() << "," << currentPeice->getBlock4()->getBlockYCoordinate() << "):" << currentPeice->getBlock4()->getBlockColor() << endl;  
+*/
 opengltrisBoardVertical[currentPeice->getBlock1()->getBlockYCoordinate()][currentPeice->getBlock1()->getBlockXCoordinate()] = currentPeice->getBlock1()->getBlockColor();
 opengltrisBoardVertical[currentPeice->getBlock2()->getBlockYCoordinate()][currentPeice->getBlock2()->getBlockXCoordinate()] = currentPeice->getBlock2()->getBlockColor();
 opengltrisBoardVertical[currentPeice->getBlock3()->getBlockYCoordinate()][currentPeice->getBlock3()->getBlockXCoordinate()] = currentPeice->getBlock3()->getBlockColor();

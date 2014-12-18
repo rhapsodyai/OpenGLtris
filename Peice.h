@@ -77,6 +77,7 @@ public:
 
 	//Methods	
 	void setPeiceColorOnInit();
+	void setBlockCoordinatesOnInit();
 	int setPeiceWidthOnInit(int p_type, int p_orientation);
 	int setPeiceHeightOnInit(int p_type, int p_orientation);
 	int setPeiceOrientationOnInit(int p_type);

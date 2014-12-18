@@ -63,6 +63,8 @@ Peice::Peice() {
         this->peice_height = calculatePeiceHeight(this->peice_type, this->peice_orientation);
 	this->peice_width = calculatePeiceWidth(this->peice_type, this->peice_orientation);
 
+	this->setBlockCoordinatesOnInit();
+
 	//printPeiceData();
 }
 
@@ -108,7 +110,8 @@ Peice::Peice(int type) {
 
 	//Initialize this peice to a random color from the default library
 	this->setPeiceColorOnInit();
-	
+
+
 	//Set characteristics of peice
 	this->peice_x_position = 0;
         this->peice_y_position = 0;
@@ -116,6 +119,8 @@ Peice::Peice(int type) {
         this->peice_orientation = this->calculatePeiceOrientation(this->peice_type);
         this->peice_height = calculatePeiceHeight(this->peice_type, this->peice_orientation);
 	this->peice_width = calculatePeiceWidth(this->peice_type, this->peice_orientation);
+
+	this->setBlockCoordinatesOnInit();
 
 	//printPeiceData();
 }
@@ -143,6 +148,322 @@ int setPeiceOrientationOnInit(int p_type) { return 0; }
 void buildPeice(int param_peice_type, int param_peice_orientation) {}
 
 
+void Peice::setPeiceColorOnInit() {
+    srand(time(NULL));
+    int randomColor = rand() % 7;
+    
+    block1.setBlockColor(randomColor+1);
+    block2.setBlockColor(randomColor+1);
+    block3.setBlockColor(randomColor+1);
+    block4.setBlockColor(randomColor+1);
+    
+    switch(randomColor) {
+        case 0:
+            peiceColor.r = pastel_red.r;
+            peiceColor.g = pastel_red.g;
+            peiceColor.b = pastel_red.b;
+            break;
+        case 1:
+            peiceColor.r = pastel_yellow.r;
+            peiceColor.g = pastel_yellow.g;
+            peiceColor.b = pastel_yellow.b;
+            break;
+        case 2:
+            peiceColor.r = pastel_green.r;
+            peiceColor.g = pastel_green.g;
+            peiceColor.b = pastel_green.b;
+            break;
+        case 3:
+            peiceColor.r = pastel_cyan.r;
+            peiceColor.g = pastel_cyan.g;
+            peiceColor.b = pastel_cyan.b;
+            break;
+        case 4:
+            peiceColor.r = pastel_blue.r;
+            peiceColor.g = pastel_blue.g;
+            peiceColor.b = pastel_blue.b;
+            break;
+        case 5:
+            peiceColor.r = pastel_violet.r;
+            peiceColor.g = pastel_violet.g;
+            peiceColor.b = pastel_violet.b;
+            break;
+        case 6:
+            peiceColor.r = pastel_magenta.r;
+            peiceColor.g = pastel_magenta.g;
+            peiceColor.b = pastel_magenta.b;
+            break;
+    }
+}
+/*
+drawLeftTetroid (int x, int y) {
+	//ORIENTATION
+	switch(this->peice_orientation) {
+		case 1:
+
+			break;
+		case 2:
+
+			break;
+	}
+
+*/
+void Peice::setBlockCoordinatesOnInit() {
+	switch(this->peice_type) {
+	    case 0: //LeftLPeice
+		switch(this->peice_orientation) {
+			case 1:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+2);
+				block4.setBlockXCoordinate(this->peice_x_position);
+
+				block1.setBlockYCoordinate(this->peice_y_position+1);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position);
+				break;
+
+			case 2:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+2);
+				block4.setBlockYCoordinate(this->peice_y_position);
+				break;
+
+			case 3:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+2);
+				block4.setBlockXCoordinate(this->peice_x_position+2);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position);
+				block4.setBlockYCoordinate(this->peice_y_position+1);
+				break;
+
+			case 4:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position+2);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position+2);
+				break;
+		}
+		break;
+		
+		case 1: //RightLPeice
+		switch(this->peice_orientation) {
+			case 1:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+2);
+				block4.setBlockXCoordinate(this->peice_x_position+2);
+
+				block1.setBlockYCoordinate(this->peice_y_position+1);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position);
+				break;
+
+			case 2:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+2);
+				block4.setBlockYCoordinate(this->peice_y_position+2);
+				break;
+
+			case 3:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+2);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position);
+				block4.setBlockYCoordinate(this->peice_y_position);
+				break;
+
+			case 4:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position+2);
+				break;
+		}
+		break;
+
+		case 2: //TPeice
+		switch(this->peice_orientation) {
+			case 1:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+2);
+				block4.setBlockYCoordinate(this->peice_y_position+1);
+				break;
+
+			case 2:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+2);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position+1);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position);
+				break;
+
+			case 3:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position+1);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position+2);
+				break;
+
+			case 4:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+2);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position);
+				break;
+		}
+		break;
+
+		case 3: //BoxPeice
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position);
+				block4.setBlockYCoordinate(this->peice_y_position+1);
+				break;
+
+
+		case 4: //LinePeice
+		switch(this->peice_orientation) {
+			case 1:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+2);
+				block4.setBlockXCoordinate(this->peice_x_position+3);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position);
+				block4.setBlockYCoordinate(this->peice_y_position);
+				break;
+
+			case 2:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position);
+				block4.setBlockXCoordinate(this->peice_x_position);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+2);
+				block4.setBlockYCoordinate(this->peice_y_position+3);
+				break;
+
+		}
+		break;
+
+		case 5: //RightTetroid
+		switch(this->peice_orientation) {
+			case 1:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position+1);
+				block2.setBlockYCoordinate(this->peice_y_position+2);
+				block3.setBlockYCoordinate(this->peice_y_position);
+				block4.setBlockYCoordinate(this->peice_y_position+1);
+				break;
+
+			case 2:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position+1);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+2);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position+1);
+				break;
+		}
+
+		case 6: //LeftTetroid
+		switch(this->peice_orientation) {
+			case 1:
+				block1.setBlockXCoordinate(this->peice_x_position);
+				block2.setBlockXCoordinate(this->peice_x_position);
+				block3.setBlockXCoordinate(this->peice_x_position+1);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position+1);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position+2);
+				break;
+
+			case 2:
+				block1.setBlockXCoordinate(this->peice_x_position+1);
+				block2.setBlockXCoordinate(this->peice_x_position+2);
+				block3.setBlockXCoordinate(this->peice_x_position);
+				block4.setBlockXCoordinate(this->peice_x_position+1);
+
+				block1.setBlockYCoordinate(this->peice_y_position);
+				block2.setBlockYCoordinate(this->peice_y_position);
+				block3.setBlockYCoordinate(this->peice_y_position+1);
+				block4.setBlockYCoordinate(this->peice_y_position+1);
+				break;
+		}
+		break;
+	}
+}
 
 void Peice::drawPeice() {
 
@@ -199,54 +520,6 @@ void Peice::drawPeiceAtCoordinates(int x, int y) {
 		break;
     }
 
-}
-
-void Peice::setPeiceColorOnInit() {
-    srand(time(NULL));
-    int randomColor = rand() % 7;
-    
-    block1.setBlockColor(randomColor+1);
-    block2.setBlockColor(randomColor+1);
-    block3.setBlockColor(randomColor+1);
-    block4.setBlockColor(randomColor+1);
-    
-    switch(randomColor) {
-        case 0:
-            peiceColor.r = pastel_red.r;
-            peiceColor.g = pastel_red.g;
-            peiceColor.b = pastel_red.b;
-            break;
-        case 1:
-            peiceColor.r = pastel_yellow.r;
-            peiceColor.g = pastel_yellow.g;
-            peiceColor.b = pastel_yellow.b;
-            break;
-        case 2:
-            peiceColor.r = pastel_green.r;
-            peiceColor.g = pastel_green.g;
-            peiceColor.b = pastel_green.b;
-            break;
-        case 3:
-            peiceColor.r = pastel_cyan.r;
-            peiceColor.g = pastel_cyan.g;
-            peiceColor.b = pastel_cyan.b;
-            break;
-        case 4:
-            peiceColor.r = pastel_blue.r;
-            peiceColor.g = pastel_blue.g;
-            peiceColor.b = pastel_blue.b;
-            break;
-        case 5:
-            peiceColor.r = pastel_violet.r;
-            peiceColor.g = pastel_violet.g;
-            peiceColor.b = pastel_violet.b;
-            break;
-        case 6:
-            peiceColor.r = pastel_magenta.r;
-            peiceColor.g = pastel_magenta.g;
-            peiceColor.b = pastel_magenta.b;
-            break;
-    }
 }
 
 void Peice::drawLeftLPeice(int x, int y)  {
