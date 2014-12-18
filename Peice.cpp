@@ -210,7 +210,7 @@ drawLeftTetroid (int x, int y) {
 */
 void Peice::setBlockCoordinatesOnInit() {
 	switch(this->peice_type) {
-	    case 0: //LeftLPeice
+	    case 1: //LeftLPeice
 		switch(this->peice_orientation) {
 			case 1:
 				block1.setBlockXCoordinate(this->peice_x_position);
@@ -262,7 +262,7 @@ void Peice::setBlockCoordinatesOnInit() {
 		}
 		break;
 		
-		case 1: //RightLPeice
+		case 2: //RightLPeice
 		switch(this->peice_orientation) {
 			case 1:
 				block1.setBlockXCoordinate(this->peice_x_position);
@@ -314,7 +314,7 @@ void Peice::setBlockCoordinatesOnInit() {
 		}
 		break;
 
-		case 2: //TPeice
+		case 3: //TPeice
 		switch(this->peice_orientation) {
 			case 1:
 				block1.setBlockXCoordinate(this->peice_x_position);
@@ -366,7 +366,7 @@ void Peice::setBlockCoordinatesOnInit() {
 		}
 		break;
 
-		case 3: //BoxPeice
+		case 4: //BoxPeice
 				block1.setBlockXCoordinate(this->peice_x_position);
 				block2.setBlockXCoordinate(this->peice_x_position);
 				block3.setBlockXCoordinate(this->peice_x_position+1);
@@ -379,7 +379,7 @@ void Peice::setBlockCoordinatesOnInit() {
 				break;
 
 
-		case 4: //LinePeice
+		case 5: //LinePeice
 		switch(this->peice_orientation) {
 			case 1:
 				block1.setBlockXCoordinate(this->peice_x_position);
@@ -408,7 +408,7 @@ void Peice::setBlockCoordinatesOnInit() {
 		}
 		break;
 
-		case 5: //RightTetroid
+		case 6: //RightTetroid
 		switch(this->peice_orientation) {
 			case 1:
 				block1.setBlockXCoordinate(this->peice_x_position);
@@ -435,7 +435,7 @@ void Peice::setBlockCoordinatesOnInit() {
 				break;
 		}
 
-		case 6: //LeftTetroid
+		case 7: //LeftTetroid
 		switch(this->peice_orientation) {
 			case 1:
 				block1.setBlockXCoordinate(this->peice_x_position);
