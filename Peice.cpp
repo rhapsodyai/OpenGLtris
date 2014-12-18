@@ -434,6 +434,7 @@ void Peice::setBlockCoordinatesOnInit() {
 				block4.setBlockYCoordinate(this->peice_y_position+1);
 				break;
 		}
+		break;
 
 		case 7: //LeftTetroid
 		switch(this->peice_orientation) {
@@ -774,17 +775,33 @@ void Peice::printPeiceData() {
 
 void Peice::incrementPeiceOrientation() {
 	if(this->peice_type == 1 || this->peice_type == 2 || this->peice_type == 3) {
-		if(this->peice_orientation < 4)
+		if(this->peice_orientation < 4) {
 			this->peice_orientation++;
-		else
+			this->setBlockCoordinatesOnInit();
+			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+		}
+		else {
 			this->peice_orientation = 1;
+			this->setBlockCoordinatesOnInit();
+			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+		}
 	}
 
 	if(this->peice_type == 5 || this->peice_type == 6 || this->peice_type == 7) {
-		if(this->peice_orientation < 2)
+		if(this->peice_orientation < 2) {
 			this->peice_orientation++;
-		else
+			this->setBlockCoordinatesOnInit();
+			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+		}
+		else {
 			this->peice_orientation = 1;
+			this->setBlockCoordinatesOnInit();
+			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+		}
 	}
 }
 

@@ -17,7 +17,10 @@ public:
 	//~SoundEngine(char*);
 
 	//Methods
+	int initialize();
+	int closeEngine();
 	int playSound(char*);
+	int playSoundFull(char*);
 private:
 
 };

@@ -31,9 +31,13 @@ using namespace std;
 int pauseBtn = 0;
 int score = 0;
 int lines = 0;
+
+//constant strings
 char* SCORE_STRING = "Score: ";
 char* LINES_STRING = "Lines: ";
-
+char* INSTRUCTIONS_STRING = "Instructions:";
+char* INSTRUCT_ROTATE_STRING = "z to Rotate";
+char* INSTRUCT_PAUSE_STRING = "p to Pause";
 
 Block drawingblock;
 
@@ -42,7 +46,7 @@ BMP *bmp; //PP
 BMP *bmp2;
 
 //Draw a block at the 5,10 mass
-Block *testBlock = new Block(5*BLOCK_SIZE,10*BLOCK_SIZE);
+//Block *testBlock = new Block(5*BLOCK_SIZE,10*BLOCK_SIZE);
 
 Peice *currentPeice = new Peice();
 Peice *nextPeice = new Peice();
@@ -247,6 +251,10 @@ void init() {
     glLoadIdentity();
     glOrtho(0.0, WINDOW_WIDTH-1, WINDOW_HEIGHT-1, 0, -1.0, 1.0);
     glMatrixMode(GL_MODELVIEW);
+
+    //initialize sound engine
+    //se.initialize();
+
 }
 
 void idle() {
@@ -263,7 +271,7 @@ void idle() {
 
 	updateBoard();
 	//printArray();
-        
+        currentPeice->printPeiceData();
 	if(currentPeice)
 		delete currentPeice;
 	
@@ -271,7 +279,7 @@ void idle() {
 	nextPeice = new Peice();	
 	
         //setColor();
-	//se.playSound("Plop.wav");        
+	//se.playSoundFull("Plop.wav");        
     }
     eliminateNeighborsAcross();
     pushDown();
@@ -282,22 +290,22 @@ void idle() {
 
 void keyboard(unsigned char key, int x, int y) {
 switch(key) {
+	//Quit key
 	case 'q':
+		//se.closeEngine();
 		_exit(0);
 		break;
 	//Rotate key
 	case 'z':
 		currentPeice->incrementPeiceOrientation();
 		break;
+	//Pause key
 	case 'p':
 
 		if(pauseBtn == 1)
 			pauseBtn = 0;
 		else
 			pauseBtn = 1;
-		break;
-	case 'b':
-		delete testBlock;
 		break;
 	}
 }
@@ -421,6 +429,7 @@ void display() {
 
 
     //DISPLAY IMAGE PP
+/*
     glEnable(GL_TEXTURE_2D);//テクスチャ有効
     glBindTexture( GL_TEXTURE_2D, bmp->texture );
     glEnable(GL_ALPHA_TEST);//アルファテスト開始
@@ -432,7 +441,19 @@ void display() {
     glEnd();
     glDisable(GL_ALPHA_TEST);//アルファテスト終了
     glDisable(GL_TEXTURE_2D);//テクスチャ無効
+*/
 
+    glEnable(GL_TEXTURE_2D);//テクスチャ有効
+    glBindTexture( GL_TEXTURE_2D, bmp->texture );
+    glEnable(GL_ALPHA_TEST);//アルファテスト開始
+    glBegin(GL_POLYGON);
+    glTexCoord2f(0.0f, 0.0f); glVertex2d((WINDOW_WIDTH/4*3)-16, (WINDOW_HEIGHT/4*3)+16);   //左下
+    glTexCoord2f(0.0f, 1.0f); glVertex2d((WINDOW_WIDTH/4*3)-16, (WINDOW_HEIGHT/4*3)-16);   //左上
+    glTexCoord2f(1.0f, 1.0f); glVertex2d((WINDOW_WIDTH/4*3)+16, (WINDOW_HEIGHT/4*3)-16);   //右上
+    glTexCoord2f(1.0f, 0.0f); glVertex2d((WINDOW_WIDTH/4*3)+16, (WINDOW_HEIGHT/4*3)+16);   //右下
+    glEnd();
+    glDisable(GL_ALPHA_TEST);//アルファテスト終了
+    glDisable(GL_TEXTURE_2D);//テクスチャ無効
 
     glEnable(GL_TEXTURE_2D);//テクスチャ有効
     glBindTexture( GL_TEXTURE_2D, bmp2->texture );
@@ -724,7 +745,30 @@ void printArray() {
 	cout << endl;
 }
 
+void eliminateNeighborsAcross() {
+	int xpos = 0, ypos = 0, copycount = 0, i = 0;
+	while(ypos < 24) {
+		
+		while(xpos < 10) { //while xpos is less than boardwidth minus 1 (10-1)
+			if(opengltrisBoardVertical[ypos][xpos] != 0) {
+				copycount++;
+			}
+			//if all the characters in a row are equal and not 0, fill in the 9s for that row
+			if(copycount == 10) {
+				for(i = 0; i < 10; i++) {
+					opengltrisBoardVertical[ypos][i] = 9;
+				}
+				lines++;
+			}
+			xpos++;
+		}
+		copycount = 0;
+		xpos = 0;
+		ypos++;
+	}
+}
 
+/*
 void eliminateNeighborsAcross() {
 	int xpos = 0, ypos = 0, copycount = 0, i = 0;
 	while(ypos < 24) {
@@ -747,7 +791,7 @@ void eliminateNeighborsAcross() {
 		ypos++;
 	}
 }
-
+*/
 
 void pushDown() {
 	int x,y,i,entered = 0,count = 0;
