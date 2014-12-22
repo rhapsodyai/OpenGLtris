@@ -56,7 +56,7 @@ Peice::Peice() {
 	this->setPeiceColorOnInit();
 	
 	//Set characteristics of peice
-	this->peice_x_position = 0;
+	this->peice_x_position = 4;
         this->peice_y_position = 0;
         this->peice_type = rand() % 7 + 1;
         this->peice_orientation = this->calculatePeiceOrientation(this->peice_type);
@@ -113,7 +113,7 @@ Peice::Peice(int type) {
 
 
 	//Set characteristics of peice
-	this->peice_x_position = 0;
+	this->peice_x_position = 4;
         this->peice_y_position = 0;
         this->peice_type = type;
         this->peice_orientation = this->calculatePeiceOrientation(this->peice_type);
@@ -778,14 +778,14 @@ void Peice::incrementPeiceOrientation() {
 		if(this->peice_orientation < 4) {
 			this->peice_orientation++;
 			this->setBlockCoordinatesOnInit();
-			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
-			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+			this->peice_height = this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->peice_width = this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
 		}
 		else {
 			this->peice_orientation = 1;
 			this->setBlockCoordinatesOnInit();
-			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
-			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+			this->peice_height = calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->peice_width = this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
 		}
 	}
 
@@ -793,18 +793,17 @@ void Peice::incrementPeiceOrientation() {
 		if(this->peice_orientation < 2) {
 			this->peice_orientation++;
 			this->setBlockCoordinatesOnInit();
-			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
-			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+			this->peice_height = this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->peice_width = this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
 		}
 		else {
 			this->peice_orientation = 1;
 			this->setBlockCoordinatesOnInit();
-			this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
-			this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
+			this->peice_height = this->calculatePeiceHeight(this->peice_type,this->peice_orientation);
+			this->peice_width = this->calculatePeiceWidth(this->peice_type,this->peice_orientation);
 		}
 	}
 }
-
 
 
 //Getters
@@ -832,10 +831,12 @@ int Peice::getBlock4X() { return block4.getBlockXCoordinate(); }
 int Peice::getBlock4Y() { return block4.getBlockYCoordinate(); }
 
 //Setters
-void Peice::setPeiceType(int newValue)        { this->peice_type = newValue; }
 void Peice::setPeiceXPosition(int newValue)   { this->peice_x_position = newValue; }
 void Peice::setPeiceYPosition(int newValue)   { this->peice_x_position = newValue; }
+void Peice::setPeiceType(int newValue)        { this->peice_type = newValue; }
 void Peice::setPeiceOrientation(int newValue) { this->peice_orientation = newValue; }
+void Peice::setPeiceHeight(int newValue)      { this->peice_height = newValue; }
+void Peice::setPeiceWidth(int newValue)       { this->peice_width = newValue; }
 
 void Peice::incrementPeiceX() { this->peice_x_position += 1;
 				

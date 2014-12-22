@@ -23,7 +23,9 @@
 
 #define WINDOW_WIDTH 480
 #define WINDOW_HEIGHT 576
-#define BLOCK_SIZE 24 //Pixels
+#define BLOCK_SIZE 24   //Pixels
+#define ARRAY_WIDTH 10  //Not used yet
+#define ARRAY_HEIGHT 24 //Not used yet
 
 using namespace std;
 
@@ -74,12 +76,12 @@ int opengltrisBoardVertical[24][10] = {
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
-    {2,2,2,2,2,2,2,2,2,2},
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0},
-    {7,7,7,7,7,7,7,7,7,7},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
 };
 
 
@@ -111,13 +113,8 @@ int  copyBoard[24][10] = {
 };
 
 
-struct color {
-    int r;
-    int g;
-    int b;
-};
-
-
+struct color { int r; int g; int b; };
+struct Point { int x ; int y ; };
 
 //colors
 struct color bgRightColor;  //Right side
@@ -134,6 +131,9 @@ struct color pastel_cyan_main;
 struct color pastel_blue_main;
 struct color pastel_violet_main;
 struct color pastel_magenta_main;
+
+//block fall limits
+struct Point points[10];
 
 
 // *** BEGIN FUNCTION PROTOTYPES *** //
@@ -188,6 +188,7 @@ void pushDown();
 void copyArray();
 void printArray();
 void eliminateNeighborsAcross();
+void substitutePointsAlt();
 
 void strreverse(char*,char*);	
 void itoa(int,char*,int);
@@ -255,23 +256,28 @@ void init() {
     //initialize sound engine
     //se.initialize();
 
+    //initialize lowest points array
+    substitutePointsAlt();
 }
 
 void idle() {
     glutPostRedisplay();
+    substitutePointsAlt();
+    cout << "Current is " << points[currentPeice->getPeiceXPosition()].y << endl;
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
+    //if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y) {
 	if(pauseBtn == 0)
         	currentPeice->incrementPeiceY();
     }
     else { //rollback
-	currentPeice->getBlock1()->printBlockData();
-	currentPeice->getBlock2()->printBlockData();
-	currentPeice->getBlock3()->printBlockData();
-	currentPeice->getBlock4()->printBlockData();
-
-	updateBoard();
+	//currentPeice->getBlock1()->printBlockData();
+	//currentPeice->getBlock2()->printBlockData();
+	//currentPeice->getBlock3()->printBlockData();
+	//currentPeice->getBlock4()->printBlockData();
 	//printArray();
-        currentPeice->printPeiceData();
+        //currentPeice->printPeiceData();
+	updateBoard();
+
 	if(currentPeice)
 		delete currentPeice;
 	
@@ -283,7 +289,7 @@ void idle() {
     }
     eliminateNeighborsAcross();
     pushDown();
-    sleep(1000);
+    sleep(500);
     //glutPostRedisplay();
 }
 
@@ -852,6 +858,24 @@ void itoa(int value, char* str, int base) {
 	
 }
 
+void substitutePointsAlt() {
+	short i, j;
+	short fSwitch = 0;
+	for(i = 0; i < 10; i++) {
+		for(j = 0; j < 24; j++) {
+			if(opengltrisBoardVertical[j][i] != 0 && fSwitch == 0) {
+				points[i].x = i;
+				points[i].y = j;
+				fSwitch = 1;
+			}
+			else if(j == 24 - 1 && fSwitch == 0) {
+				points[i].x = i;
+				points[i].y = 24;
+			}
+		}
+		fSwitch = 0;
+	}
+}
 
 int main(int argc, char* argv[]) {
     glutInit(&argc, argv);

@@ -29,7 +29,6 @@ enum peiceType {
 };
 	
 public:
-
 	struct color {
     		int r;
     		int g;
@@ -112,6 +111,8 @@ public:
 	void setPeiceYPosition(int newValue);
 	void setPeiceType(int newValue);
 	void setPeiceOrientation(int newValue);
+	void setPeiceHeight(int newValue);
+	void setPeiceWidth(int newValue);
 	void incrementPeiceX();
 	void decrementPeiceX();
 	void incrementPeiceY();
@@ -122,7 +123,8 @@ public:
 	Block* getBlock2();
 	Block* getBlock3();
 	Block* getBlock4();
-	
+
+
 	//temp getters and setters for blocks
 	int getBlock1X();
 	int getBlock1Y();
