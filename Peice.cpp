@@ -24,6 +24,8 @@ Peice::Peice() {
 	block3.setBlockYCoordinate(0);
 	block4.setBlockYCoordinate(0);
 
+	lowestBlocks[4] = {0};
+
 	//Set Color Library Default Values
 	this->pastel_red.r     = 246;
 	this->pastel_red.g     = 150;
@@ -65,7 +67,6 @@ Peice::Peice() {
 
 	this->setBlockCoordinatesOnInit();
 
-	//printPeiceData();
 }
 
 Peice::Peice(int type) {
@@ -79,6 +80,8 @@ Peice::Peice(int type) {
 	block2.setBlockYCoordinate(0);
 	block3.setBlockYCoordinate(0);
 	block4.setBlockYCoordinate(0);
+
+	lowestBlocks[4] = {0};
 	
 	//Set Color Library Default Values
 	this->pastel_red.r     = 246;
@@ -122,7 +125,6 @@ Peice::Peice(int type) {
 
 	this->setBlockCoordinatesOnInit();
 
-	//printPeiceData();
 }
 
 Peice::~Peice() {
@@ -195,6 +197,7 @@ void Peice::setPeiceColorOnInit() {
             break;
     }
 }
+
 /*
 drawLeftTetroid (int x, int y) {
 	//ORIENTATION
@@ -466,6 +469,131 @@ void Peice::setBlockCoordinatesOnInit() {
 	}
 }
 
+
+void Peice::findLowestBlocks() {
+	//blocks go from left to right
+	//e.g. xaxes[0] is the x axis of block 1, yaxes[3] is the y axis of block4
+	int xaxes[4];
+	int yaxes[4];
+
+	int i,j, temp;
+	int mval = 0, current_lowest = 0;
+
+	xaxes[0] = this->block1.getBlockXCoordinate();
+	xaxes[1] = this->block2.getBlockXCoordinate();
+	xaxes[2] = this->block3.getBlockXCoordinate();
+	xaxes[3] = this->block4.getBlockXCoordinate();
+
+	yaxes[0] = this->block1.getBlockYCoordinate();
+	yaxes[1] = this->block2.getBlockYCoordinate();
+	yaxes[2] = this->block3.getBlockYCoordinate();
+	yaxes[3] = this->block4.getBlockYCoordinate();
+
+	lowestBlocks[0] = 0;
+	lowestBlocks[1] = 0;
+	lowestBlocks[2] = 0;
+	lowestBlocks[3] = 0;
+
+	//cout << "[" << xaxes[0] << "," << xaxes[1] << "," << xaxes[2] << "," << xaxes[3] << "]" << endl;
+	//cout << "[" << yaxes[0] << "," << yaxes[1] << "," << yaxes[2] << "," << yaxes[3] << "]" << endl;
+
+	for(i = 0; i < 10; i++) {
+		for(j = 0; j < 4; j++) {
+			if(xaxes[j] == i) {
+				if(yaxes[j] > mval) {
+					mval = yaxes[j];
+				}
+			}
+		}
+		//cout << "mval = " << mval << endl;
+		for(j = 0; j < 4; j++) {
+			if(yaxes[j] == mval && xaxes[j] == i) {
+				//cout << "j:" << j << " xaxes:" << xaxes[j] << " yaxes:" << yaxes[j] << ", mval = " << mval << endl;
+				lowestBlocks[j] = 1;
+			}
+		}
+		mval = 0;
+	}
+	
+	//print out results
+	/*
+	cout << "[" ;
+	for(temp = 0; temp < 4; temp++ ) {
+		cout << this->lowestBlocks[temp];
+		if(temp != 3)
+			cout << ",";
+	}
+	cout << "]" << endl;
+	cout << endl;
+	*/
+}
+
+
+void Peice::findLowestBlocksAlt() {
+	
+	//blocks go from left to right
+	//e.g. xaxes[0] is the x axis of block 1, yaxes[3] is the y axis of block4
+	int xaxes[4];
+	int yaxes[4];
+
+	int i,j,temp;
+	int ymin = 24, current_lowest = 0;
+
+	xaxes[0] = this->block1.getBlockXCoordinate();
+	xaxes[1] = this->block2.getBlockXCoordinate();
+	xaxes[2] = this->block3.getBlockXCoordinate();
+	xaxes[3] = this->block4.getBlockXCoordinate();
+
+	yaxes[0] = this->block1.getBlockYCoordinate();
+	yaxes[1] = this->block2.getBlockYCoordinate();
+	yaxes[2] = this->block3.getBlockYCoordinate();
+	yaxes[3] = this->block4.getBlockYCoordinate();
+
+	int max_val = 0;
+	int count = 0;
+	for(i = 1; i <= 10; i++) {
+		for(j = 0; j < 4; j++) {
+			if(xaxes[j] == i) {
+				count++;
+				if(count > 1)
+					if(yaxes[j] > max_val) {
+						max_val = yaxes[j];
+						current_lowest = j;
+				}
+			}
+			lowestBlocks[j] = current_lowest;
+		}
+	}
+	
+/*	
+	cout << "[" ;
+	for(temp = 0; temp < 4; temp++ ) {
+		cout << xaxes[temp];
+		if(temp != 3)
+			cout << ",";
+	}
+	cout << "]" << endl;
+
+	cout << "[" ;
+	for(temp = 0; temp < 4; temp++ ) {
+		cout << yaxes[temp];
+		if(temp != 3)
+			cout << ",";
+	}
+	cout << "]" << endl;
+*/
+
+	cout << "[" ;
+	for(temp = 0; temp < 4; temp++ ) {
+		cout << this->lowestBlocks[temp];
+		if(temp != 3)
+			cout << ",";
+	}
+	cout << "]" << endl;
+	cout << endl;
+}
+
+
 void Peice::drawPeice() {
 
     switch(this->peice_type) {
@@ -666,6 +794,7 @@ void Peice::drawRightTetroid(int x, int y) {
 
 }
 
+
 // XX
 //  XX
 void Peice::drawLeftTetroid (int x, int y) {
@@ -813,6 +942,8 @@ int Peice::getPeiceType()        { return this->peice_type;  }
 int Peice::getPeiceOrientation() { return this->peice_orientation; }
 int Peice::getPeiceHeight()      { return this->peice_height; }
 int Peice::getPeiceWidth()       { return this->peice_width; }
+int* Peice::getLowestBlocks()     { return this->lowestBlocks; }
+
 
 Block* Peice::getBlock1() { return &block1; }
 Block* Peice::getBlock2() { return &block2; }

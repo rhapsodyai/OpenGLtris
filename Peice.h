@@ -29,11 +29,7 @@ enum peiceType {
 };
 	
 public:
-	struct color {
-    		int r;
-    		int g;
-    		int b;
-	};
+	struct color { int r; int g; int b; };
 
 	color peiceColor;
 	color paneColor;
@@ -69,6 +65,11 @@ public:
         int leftmost_block_position;
         int rightmost_block_position;
 
+	//blocks go from left to right
+	int lowestBlocks[4]; //[0,0,1,0] means block 3 is a lowest block
+	int lowest_values[5];
+	int highest_values[5];
+
 	//Constructors
 	Peice();
 	Peice(int);
@@ -80,6 +81,11 @@ public:
 	int setPeiceWidthOnInit(int p_type, int p_orientation);
 	int setPeiceHeightOnInit(int p_type, int p_orientation);
 	int setPeiceOrientationOnInit(int p_type);
+
+
+	void findLowestBlocks();
+	void findLowestBlocksAlt();
+
 	void buildPeice(int param_peice_type, int param_peice_orientation);
 	void drawPeice();
 	void drawPeiceAtCoordinates(int, int); 
@@ -107,6 +113,8 @@ public:
 	int getPeiceOrientation();
 	int getPeiceHeight();
 	int getPeiceWidth();
+	int* getLowestBlocks();
+
 	void setPeiceXPosition(int newValue);
 	void setPeiceYPosition(int newValue);
 	void setPeiceType(int newValue);

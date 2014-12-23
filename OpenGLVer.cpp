@@ -189,6 +189,7 @@ void copyArray();
 void printArray();
 void eliminateNeighborsAcross();
 void substitutePointsAlt();
+bool checkCollision();
 
 void strreverse(char*,char*);	
 void itoa(int,char*,int);
@@ -263,11 +264,17 @@ void init() {
 void idle() {
     glutPostRedisplay();
     substitutePointsAlt();
-    cout << "Current is " << points[currentPeice->getPeiceXPosition()].y << endl;
+    
+    //cout << "Current is " << points[currentPeice->getPeiceXPosition()].y << endl;
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
     //if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y) {
-	if(pauseBtn == 0)
-        	currentPeice->incrementPeiceY();
+	if(pauseBtn == 0) {
+		currentPeice->findLowestBlocks();
+		if(!checkCollision())
+        		currentPeice->incrementPeiceY()
+		else
+			break;		
+	}
     }
     else { //rollback
 	//currentPeice->getBlock1()->printBlockData();
@@ -289,7 +296,7 @@ void idle() {
     }
     eliminateNeighborsAcross();
     pushDown();
-    sleep(500);
+    sleep(5000);
     //glutPostRedisplay();
 }
 
@@ -470,25 +477,25 @@ void display() {
     glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 0);    //右上
     glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 128);  //右下
     glEnd();
-glBegin(GL_POLYGON);
+    glBegin(GL_POLYGON);
     glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 256);   //左下
     glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 128);   //左上
     glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 128);  //右上
     glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 256);  //右下
     glEnd();
-glBegin(GL_POLYGON);
+    glBegin(GL_POLYGON);
     glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 384);   //左下
     glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 256);   //左上
     glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 256);  //右上
     glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 384);  //右下
     glEnd();
-glBegin(GL_POLYGON);
+    glBegin(GL_POLYGON);
     glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 512);   //左下
     glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 384);   //左上
     glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 384);  //右上
     glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 512);  //右下
     glEnd();
-glBegin(GL_POLYGON);
+    glBegin(GL_POLYGON);
     glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 640);   //左下
     glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 512);   //左上
     glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 512);  //右上
@@ -555,7 +562,6 @@ void drawNextPeice() {
 
 }
 
-
 void drawWindowPane() {
 	glBegin(GL_QUADS);
 	glVertex2f(0.0f,0.0f);
@@ -565,7 +571,6 @@ void drawWindowPane() {
 	glVertex2f(0.0f,0.0f);
 	glEnd();
 }
-
 
 void drawBoard() {
 	for (int i = 0; i < 10; i++) {
@@ -588,7 +593,6 @@ void drawBoard() {
 	}
 }
 
-
 /* The way that this should work is as follows 
 
 Step 1: At the end of each peice loop update board is called.
@@ -597,6 +601,7 @@ Step 3: The board is updated with a number to represent the colored block it rep
 Step 4: All variables are reset, after which the main loop proceeds to delete the peice.
 
 */
+
 void updateBoard() {
 /*
 cout << "Block info: THIS IS FOR DEBUGING!" << endl;
@@ -875,6 +880,40 @@ void substitutePointsAlt() {
 		}
 		fSwitch = 0;
 	}
+}
+
+//I don't know if this is right yet
+bool checkCollision() {
+/*
+cout << "[";
+cout << currentPeice->getLowestBlocks()[0] << ",";
+cout << currentPeice->getLowestBlocks()[1] << ",";
+cout << currentPeice->getLowestBlocks()[2] << ",";
+cout << currentPeice->getLowestBlocks()[3] << "]" << endl;
+*/
+
+
+//block one is a lowest
+if(currentPeice->getLowestBlocks()[0] == 1)
+	if(((currentPeice->getBlock1()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
+	return true;
+
+//block two is a lowest
+if(currentPeice->getLowestBlocks()[1] == 1)
+	if(((currentPeice->getBlock2()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
+	return true;
+
+//block three is a lowest
+if(currentPeice->getLowestBlocks()[2] == 1)
+	if(((currentPeice->getBlock3()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
+	return true;
+
+//block four is a lowest
+if(currentPeice->getLowestBlocks()[3] == 1)
+	if(((currentPeice->getBlock4()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
+	return true;
+
+return false;
 }
 
 int main(int argc, char* argv[]) {
