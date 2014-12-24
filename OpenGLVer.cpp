@@ -264,26 +264,20 @@ void init() {
 void idle() {
     glutPostRedisplay();
     substitutePointsAlt();
-    
+    currentPeice->findLowestBlocks();
+	
+
     //cout << "Current is " << points[currentPeice->getPeiceXPosition()].y << endl;
-    if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24) {
+    //if(checkCollision()) {
+    if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24 && !checkCollision()) {
     //if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y) {
 	if(pauseBtn == 0) {
-		currentPeice->findLowestBlocks();
-		if(!checkCollision())
-        		currentPeice->incrementPeiceY()
-		else
-			break;		
+        	currentPeice->incrementPeiceY();	
 	}
     }
     else { //rollback
-	//currentPeice->getBlock1()->printBlockData();
-	//currentPeice->getBlock2()->printBlockData();
-	//currentPeice->getBlock3()->printBlockData();
-	//currentPeice->getBlock4()->printBlockData();
-	//printArray();
-        //currentPeice->printPeiceData();
 	updateBoard();
+	//printArray();
 
 	if(currentPeice)
 		delete currentPeice;
@@ -296,7 +290,7 @@ void idle() {
     }
     eliminateNeighborsAcross();
     pushDown();
-    sleep(5000);
+    sleep(1000);
     //glutPostRedisplay();
 }
 
@@ -326,26 +320,34 @@ switch(key) {
 void specialKeyboard(int key, int x, int y) {
     switch(key) {
         case GLUT_KEY_LEFT:
-            if(currentPeice->getPeiceXPosition() > 0)
+            if(currentPeice->getPeiceXPosition() > 0) {
                 currentPeice->decrementPeiceX();
+		currentPeice->findLowestBlocks();
+	    }
             score++;
             glutPostRedisplay();
             break;
         case GLUT_KEY_RIGHT:
-            if(currentPeice->getPeiceXPosition() + currentPeice->getPeiceWidth() < 10)
+            if(currentPeice->getPeiceXPosition() + currentPeice->getPeiceWidth() < 10) {
                 currentPeice->incrementPeiceX();
+		currentPeice->findLowestBlocks();
+	    }
             score++;
             glutPostRedisplay();
             break;
         case GLUT_KEY_UP:
-            if(currentPeice->getPeiceYPosition() > 0)
+            if(currentPeice->getPeiceYPosition() > 0) {
                 currentPeice->decrementPeiceY();
+		currentPeice->findLowestBlocks();
+	    }
             score++;
             glutPostRedisplay();
             break;
         case GLUT_KEY_DOWN:
-            if(currentPeice->getPeiceYPosition() < 22)
+            if(currentPeice->getPeiceYPosition() < 22) {
                 currentPeice->incrementPeiceY();
+		currentPeice->findLowestBlocks();
+	    }
             score++;
             glutPostRedisplay();
             break;
@@ -601,7 +603,6 @@ Step 3: The board is updated with a number to represent the colored block it rep
 Step 4: All variables are reset, after which the main loop proceeds to delete the peice.
 
 */
-
 void updateBoard() {
 /*
 cout << "Block info: THIS IS FOR DEBUGING!" << endl;
@@ -847,7 +848,6 @@ void itoa(int value, char* str, int base) {
 	int sign;
 
 	// Validate base
-	
 	if (base<2 || base>35){ *wstr='\0'; return; }
 
 	// Take care of sign
@@ -882,8 +882,9 @@ void substitutePointsAlt() {
 	}
 }
 
-//I don't know if this is right yet
+
 bool checkCollision() {
+
 /*
 cout << "[";
 cout << currentPeice->getLowestBlocks()[0] << ",";
@@ -893,24 +894,68 @@ cout << currentPeice->getLowestBlocks()[3] << "]" << endl;
 */
 
 
+    cout << "Block1 Y: " << currentPeice->getBlock1()->getBlockYCoordinate() << endl;
+    cout << "Block2 Y: " << currentPeice->getBlock2()->getBlockYCoordinate() << endl;
+    cout << "Block3 Y: " << currentPeice->getBlock3()->getBlockYCoordinate() << endl;
+    cout << "Block4 Y: " << currentPeice->getBlock4()->getBlockYCoordinate() << endl;
+    cout << "Peice Y position: " << currentPeice->getPeiceYPosition() << endl;
+    cout << "Peice Height: " << currentPeice->getPeiceHeight() << endl;
+
+
+        //print out results
+	int temp;
+	cout << "Points X [" ;
+	for(temp = 0; temp < 10; temp++ ) {
+		cout << points[temp].x;
+		if(temp != 9)
+			cout << ",";
+	}
+	cout << "]" << endl;
+	cout << endl;
+
+	cout << "Points Y [" ;
+	for(temp = 0; temp < 10; temp++ ) {
+		cout << points[temp].y;
+		if(temp != 9)
+			cout << ",";
+	}
+	cout << "]" << endl;
+	cout << endl;
+
+//if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y) {
+
 //block one is a lowest
+// + peiceheight - distance of the block from the base of the peice
+// + peiceheight - blockYcoor - peiceYcoor
+
+cout << "Collision 1: " << currentPeice->getBlock1()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
+cout << "Collision 2: " << currentPeice->getBlock2()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
+cout << "Collision 3: " << currentPeice->getBlock3()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
+cout << "Collision 4: " << currentPeice->getBlock4()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
+
+
 if(currentPeice->getLowestBlocks()[0] == 1)
-	if(((currentPeice->getBlock1()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
-	return true;
+	if(currentPeice->getBlock1()->getBlockYCoordinate()  >= points[currentPeice->getBlock1()->getBlockXCoordinate()].y -1)
+		return true;
 
 //block two is a lowest
 if(currentPeice->getLowestBlocks()[1] == 1)
-	if(((currentPeice->getBlock2()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
-	return true;
+	if(currentPeice->getBlock2()->getBlockYCoordinate()  >= points[currentPeice->getBlock2()->getBlockXCoordinate()].y -1)
+		return true;
 
 //block three is a lowest
 if(currentPeice->getLowestBlocks()[2] == 1)
-	if(((currentPeice->getBlock3()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
-	return true;
+	if(currentPeice->getBlock3()->getBlockYCoordinate() >= points[currentPeice->getBlock3()->getBlockXCoordinate()].y -1)
+		return true;
 
 //block four is a lowest
 if(currentPeice->getLowestBlocks()[3] == 1)
-	if(((currentPeice->getBlock4()->getBlockYCoordinate()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y)
+	if(currentPeice->getBlock4()->getBlockYCoordinate() >= points[currentPeice->getBlock4()->getBlockXCoordinate()].y -1)
+		return true;
+
+if(currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() < 24)
+	return false;
+else
 	return true;
 
 return false;
