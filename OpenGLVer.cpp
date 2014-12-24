@@ -201,7 +201,7 @@ void itoa(int,char*,int);
 void init() {
 
     bmp = new BMP("nyan.bmp");//PP
-    bmp2 = new BMP("bou.bmp");//PP
+    bmp2 = new BMP("neon.png");//PP
 
     //initialize colors
     bgPaneColor.r = 0; //255;
@@ -266,9 +266,6 @@ void idle() {
     substitutePointsAlt();
     currentPeice->findLowestBlocks();
 	
-
-    //cout << "Current is " << points[currentPeice->getPeiceXPosition()].y << endl;
-    //if(checkCollision()) {
     if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < 24 && !checkCollision()) {
     //if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y) {
 	if(pauseBtn == 0) {
@@ -277,7 +274,6 @@ void idle() {
     }
     else { //rollback
 	updateBoard();
-	//printArray();
 
 	if(currentPeice)
 		delete currentPeice;
@@ -290,7 +286,7 @@ void idle() {
     }
     eliminateNeighborsAcross();
     pushDown();
-    sleep(1000);
+    sleep(2000);
     //glutPostRedisplay();
 }
 
@@ -441,73 +437,29 @@ void display() {
     drawString(300,30, LINES_STRING);
     drawString(400,30, lines_string);
 
-
-
-    //DISPLAY IMAGE PP
-/*
-    glEnable(GL_TEXTURE_2D);//テクスチャ有効
+    glEnable(GL_TEXTURE_2D);//Enable Texture
     glBindTexture( GL_TEXTURE_2D, bmp->texture );
-    glEnable(GL_ALPHA_TEST);//アルファテスト開始
+    glEnable(GL_ALPHA_TEST);//Begin Alpha Test
     glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3+16, WINDOW_HEIGHT);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3+16, WINDOW_HEIGHT/2); //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH+16, WINDOW_HEIGHT/2);     //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH+16, WINDOW_HEIGHT);       //右下
+    glTexCoord2f(0.0f, 0.0f); glVertex2d((WINDOW_WIDTH/4*3)-16, (WINDOW_HEIGHT/4*3)+16);   //Lower Left
+    glTexCoord2f(0.0f, 1.0f); glVertex2d((WINDOW_WIDTH/4*3)-16, (WINDOW_HEIGHT/4*3)-16);   //Upper Left
+    glTexCoord2f(1.0f, 1.0f); glVertex2d((WINDOW_WIDTH/4*3)+16, (WINDOW_HEIGHT/4*3)-16);   //Uppet Right
+    glTexCoord2f(1.0f, 0.0f); glVertex2d((WINDOW_WIDTH/4*3)+16, (WINDOW_HEIGHT/4*3)+16);   //Lower Right
     glEnd();
-    glDisable(GL_ALPHA_TEST);//アルファテスト終了
-    glDisable(GL_TEXTURE_2D);//テクスチャ無効
-*/
+    glDisable(GL_ALPHA_TEST);//End Alpha Test
+    glDisable(GL_TEXTURE_2D);//Disabe Texture
 
-    glEnable(GL_TEXTURE_2D);//テクスチャ有効
-    glBindTexture( GL_TEXTURE_2D, bmp->texture );
-    glEnable(GL_ALPHA_TEST);//アルファテスト開始
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d((WINDOW_WIDTH/4*3)-16, (WINDOW_HEIGHT/4*3)+16);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d((WINDOW_WIDTH/4*3)-16, (WINDOW_HEIGHT/4*3)-16);   //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d((WINDOW_WIDTH/4*3)+16, (WINDOW_HEIGHT/4*3)-16);   //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d((WINDOW_WIDTH/4*3)+16, (WINDOW_HEIGHT/4*3)+16);   //右下
-    glEnd();
-    glDisable(GL_ALPHA_TEST);//アルファテスト終了
-    glDisable(GL_TEXTURE_2D);//テクスチャ無効
-
-    glEnable(GL_TEXTURE_2D);//テクスチャ有効
+    glEnable(GL_TEXTURE_2D);//Enable Texture
     glBindTexture( GL_TEXTURE_2D, bmp2->texture );
-    glEnable(GL_ALPHA_TEST);//アルファテスト開始
+    glEnable(GL_ALPHA_TEST);//Begin Alpha Test
     glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 128);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 0);     //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 0);    //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 128);  //右下
+    glTexCoord2f(0.0f, 0.0f); glVertex2d((WINDOW_WIDTH/2)+3, WINDOW_HEIGHT);   //Lower Left
+    glTexCoord2f(0.0f, 1.0f); glVertex2d((WINDOW_WIDTH/2)+3, 0);               //Upper Left
+    glTexCoord2f(1.0f, 1.0f); glVertex2d((WINDOW_WIDTH/2)+3+8, 0);             //Uppet Right
+    glTexCoord2f(1.0f, 0.0f); glVertex2d((WINDOW_WIDTH/2)+3+8, WINDOW_HEIGHT); //Lower Right
     glEnd();
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 256);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 128);   //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 128);  //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 256);  //右下
-    glEnd();
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 384);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 256);   //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 256);  //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 384);  //右下
-    glEnd();
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 512);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 384);   //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 384);  //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 512);  //右下
-    glEnd();
-    glBegin(GL_POLYGON);
-    glTexCoord2f(0.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+3, 640);   //左下
-    glTexCoord2f(0.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+3, 512);   //左上
-    glTexCoord2f(1.0f, 1.0f); glVertex2d(WINDOW_WIDTH/2+19, 512);  //右上
-    glTexCoord2f(1.0f, 0.0f); glVertex2d(WINDOW_WIDTH/2+19, 640);  //右下
-    glEnd();
-    glDisable(GL_ALPHA_TEST);//アルファテスト終了
-    glDisable(GL_TEXTURE_2D);//テクスチャ無効
-
-
- 
+    glDisable(GL_ALPHA_TEST);//End Alpha Test
+    glDisable(GL_TEXTURE_2D);//Disabe Texture
 
     //Refresh the screen
     //glFlush();
@@ -780,31 +732,6 @@ void eliminateNeighborsAcross() {
 	}
 }
 
-/*
-void eliminateNeighborsAcross() {
-	int xpos = 0, ypos = 0, copycount = 0, i = 0;
-	while(ypos < 24) {
-		
-		while(xpos < 9) { //while xpos is less than boardwidth minus 1 (10-1)
-			if(opengltrisBoardVertical[ypos][xpos] == opengltrisBoardVertical[ypos][xpos+1] && opengltrisBoardVertical[ypos][xpos] != 0) {
-				copycount++;
-			}
-			//if all the characters in a row are equal and not 0, fill in the 9s for that row
-			if(copycount == 9) {
-				for(i = 0; i < 10; i++) {
-					opengltrisBoardVertical[ypos][i] = 9;
-				}
-				lines++;
-			}
-			xpos++;
-		}
-		copycount = 0;
-		xpos = 0;
-		ypos++;
-	}
-}
-*/
-
 void pushDown() {
 	int x,y,i,entered = 0,count = 0;
 	for(x = 0; x < 10; x++) {
@@ -885,80 +812,32 @@ void substitutePointsAlt() {
 
 bool checkCollision() {
 
-/*
-cout << "[";
-cout << currentPeice->getLowestBlocks()[0] << ",";
-cout << currentPeice->getLowestBlocks()[1] << ",";
-cout << currentPeice->getLowestBlocks()[2] << ",";
-cout << currentPeice->getLowestBlocks()[3] << "]" << endl;
-*/
+	//block one is a lowest
+	if(currentPeice->getLowestBlocks()[0] == 1)
+		if(currentPeice->getBlock1()->getBlockYCoordinate()  >= points[currentPeice->getBlock1()->getBlockXCoordinate()].y -1)
+			return true;
 
+	//block two is a lowest
+	if(currentPeice->getLowestBlocks()[1] == 1)
+		if(currentPeice->getBlock2()->getBlockYCoordinate()  >= points[currentPeice->getBlock2()->getBlockXCoordinate()].y -1)
+			return true;
 
-    cout << "Block1 Y: " << currentPeice->getBlock1()->getBlockYCoordinate() << endl;
-    cout << "Block2 Y: " << currentPeice->getBlock2()->getBlockYCoordinate() << endl;
-    cout << "Block3 Y: " << currentPeice->getBlock3()->getBlockYCoordinate() << endl;
-    cout << "Block4 Y: " << currentPeice->getBlock4()->getBlockYCoordinate() << endl;
-    cout << "Peice Y position: " << currentPeice->getPeiceYPosition() << endl;
-    cout << "Peice Height: " << currentPeice->getPeiceHeight() << endl;
+	//block three is a lowest
+	if(currentPeice->getLowestBlocks()[2] == 1)
+		if(currentPeice->getBlock3()->getBlockYCoordinate() >= points[currentPeice->getBlock3()->getBlockXCoordinate()].y -1)
+			return true;
 
+	//block four is a lowest
+	if(currentPeice->getLowestBlocks()[3] == 1)
+		if(currentPeice->getBlock4()->getBlockYCoordinate() >= points[currentPeice->getBlock4()->getBlockXCoordinate()].y -1)
+			return true;
 
-        //print out results
-	int temp;
-	cout << "Points X [" ;
-	for(temp = 0; temp < 10; temp++ ) {
-		cout << points[temp].x;
-		if(temp != 9)
-			cout << ",";
-	}
-	cout << "]" << endl;
-	cout << endl;
-
-	cout << "Points Y [" ;
-	for(temp = 0; temp < 10; temp++ ) {
-		cout << points[temp].y;
-		if(temp != 9)
-			cout << ",";
-	}
-	cout << "]" << endl;
-	cout << endl;
-
-//if(((currentPeice->getPeiceYPosition()) + currentPeice->getPeiceHeight()) < points[currentPeice->getPeiceXPosition()].y) {
-
-//block one is a lowest
-// + peiceheight - distance of the block from the base of the peice
-// + peiceheight - blockYcoor - peiceYcoor
-
-cout << "Collision 1: " << currentPeice->getBlock1()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
-cout << "Collision 2: " << currentPeice->getBlock2()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
-cout << "Collision 3: " << currentPeice->getBlock3()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
-cout << "Collision 4: " << currentPeice->getBlock4()->getBlockYCoordinate() - currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() << endl;
-
-
-if(currentPeice->getLowestBlocks()[0] == 1)
-	if(currentPeice->getBlock1()->getBlockYCoordinate()  >= points[currentPeice->getBlock1()->getBlockXCoordinate()].y -1)
+	if(currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() < 24)
+		return false;
+	else
 		return true;
 
-//block two is a lowest
-if(currentPeice->getLowestBlocks()[1] == 1)
-	if(currentPeice->getBlock2()->getBlockYCoordinate()  >= points[currentPeice->getBlock2()->getBlockXCoordinate()].y -1)
-		return true;
-
-//block three is a lowest
-if(currentPeice->getLowestBlocks()[2] == 1)
-	if(currentPeice->getBlock3()->getBlockYCoordinate() >= points[currentPeice->getBlock3()->getBlockXCoordinate()].y -1)
-		return true;
-
-//block four is a lowest
-if(currentPeice->getLowestBlocks()[3] == 1)
-	if(currentPeice->getBlock4()->getBlockYCoordinate() >= points[currentPeice->getBlock4()->getBlockXCoordinate()].y -1)
-		return true;
-
-if(currentPeice->getPeiceYPosition() + currentPeice->getPeiceHeight() < 24)
 	return false;
-else
-	return true;
-
-return false;
 }
 
 int main(int argc, char* argv[]) {
